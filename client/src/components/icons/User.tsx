@@ -11,11 +11,11 @@ export default function User() {
       xmlns="http://www.w3.org/2000/svg"
       stroke="#aba6a6"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0" />
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
 
