@@ -6,6 +6,7 @@ import {
   } from "@/components/ui/accordion"
 
 export default function AcordeonPreguntas() {
+  // haciendo preuba 
  return (
     <div className="mx-auto w-full max-w-[900px] mt-52 ">
         <h5 className="font-extrabold text-4xl text-center mb-10">Preguntas frecuentes</h5>
