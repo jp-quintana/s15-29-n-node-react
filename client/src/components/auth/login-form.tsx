@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { signIn } from 'next-auth/react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,12 +17,14 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import LoadingButton from '../loading-button';
 import PasswordInput from '../password-input';
 
 import { loginSchema } from '@/lib/schemas';
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -30,13 +34,17 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    setIsLoading(true);
     const result = await signIn('credentials', {
       ...values,
       redirect: false,
     });
 
     if (result?.ok) window.location.reload();
-    if (result?.error) console.log(result.error);
+    if (result?.error) {
+      console.log(result.error);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -48,6 +56,7 @@ const LoginForm = () => {
         <FormField
           control={form.control}
           name="email"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Email</FormLabel>
@@ -61,6 +70,7 @@ const LoginForm = () => {
         <FormField
           control={form.control}
           name="password"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Contraseña</FormLabel>
@@ -72,9 +82,13 @@ const LoginForm = () => {
           )}
         />
         <div className="w-full">
-          <Button type="submit" className="w-full mt-5">
+          <LoadingButton
+            isLoading={isLoading}
+            type="submit"
+            className="w-full mt-5"
+          >
             Iniciar
-          </Button>
+          </LoadingButton>
         </div>
       </form>
     </Form>

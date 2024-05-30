@@ -1,8 +1,14 @@
 'use client';
 
+import { useState } from 'react';
+
+import { signIn } from 'next-auth/react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { register } from '@/services/auth.service';
 
 import {
   Form,
@@ -13,13 +19,14 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import LoadingButton from '../loading-button';
 import PasswordInput from '../password-input';
-import { signIn } from 'next-auth/react';
+
 import { registerSchema } from '@/lib/schemas';
-import { register } from '@/services/auth.service';
 
 const RegisterForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -32,17 +39,26 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+    setIsLoading(true);
     const registerResult = await register(values);
 
-    if (registerResult?.error) console.log(registerResult.error);
+    if (registerResult?.error) {
+      console.log(registerResult.error);
+      setIsLoading(false);
+    }
 
     if (registerResult?.ok) {
       const loginResult = await signIn('credentials', {
         ...values,
         redirect: false,
       });
+
       if (loginResult?.ok) window.location.reload();
-      if (loginResult?.error) console.log(loginResult.error);
+
+      if (loginResult?.error) {
+        console.log(loginResult.error);
+        setIsLoading(false);
+      }
     }
   };
 
@@ -55,6 +71,7 @@ const RegisterForm = () => {
         <FormField
           control={form.control}
           name="name"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Nombre</FormLabel>
@@ -68,6 +85,7 @@ const RegisterForm = () => {
         <FormField
           control={form.control}
           name="lastName"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Apellido</FormLabel>
@@ -81,6 +99,7 @@ const RegisterForm = () => {
         <FormField
           control={form.control}
           name="email"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Email</FormLabel>
@@ -94,6 +113,7 @@ const RegisterForm = () => {
         <FormField
           control={form.control}
           name="password"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Contraseña</FormLabel>
@@ -107,6 +127,7 @@ const RegisterForm = () => {
         <FormField
           control={form.control}
           name="confirmPassword"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Confirmar contraseña</FormLabel>
@@ -118,9 +139,13 @@ const RegisterForm = () => {
           )}
         />
         <div className="w-full">
-          <Button type="submit" className="w-full mt-5">
+          <LoadingButton
+            isLoading={isLoading}
+            type="submit"
+            className="w-full mt-5"
+          >
             Registrate
-          </Button>
+          </LoadingButton>
         </div>
       </form>
     </Form>
