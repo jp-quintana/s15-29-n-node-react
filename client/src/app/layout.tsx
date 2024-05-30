@@ -7,6 +7,8 @@ import AuthProvider from '@/components/auth-provider';
 import MaxWidthContainer from '@/components/max-width-container';
 import Nav from '@/components/nav/nav';
 
+import { Toaster } from '@/components/ui/toaster';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -36,7 +38,8 @@ export default function RootLayout({
                 </MaxWidthContainer>
               </div>
             </header>
-            <div>{children}</div>
+            <main>{children}</main>
+            <Toaster />
           </ThemeProvider>
         </AuthProvider>
       </body>

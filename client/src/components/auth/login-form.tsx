@@ -1,5 +1,9 @@
 'use client';
 
+import { useState } from 'react';
+
+import { signIn } from 'next-auth/react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -13,12 +17,17 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import LoadingButton from '../loading-button';
 import PasswordInput from '../password-input';
-import { signIn } from 'next-auth/react';
+import { useToast } from '@/components/ui/use-toast';
+
 import { loginSchema } from '@/lib/schemas';
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -28,9 +37,23 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
-    await signIn('credentials', {
+    setIsLoading(true);
+    const result = await signIn('credentials', {
       ...values,
+      redirect: false,
     });
+
+    if (result?.error) {
+      console.log(result.error);
+      toast({
+        title: 'Hubo un error',
+        description: result.error,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    window.location.reload();
   };
 
   return (
@@ -42,6 +65,7 @@ const LoginForm = () => {
         <FormField
           control={form.control}
           name="email"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Email</FormLabel>
@@ -55,6 +79,7 @@ const LoginForm = () => {
         <FormField
           control={form.control}
           name="password"
+          disabled={isLoading}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Contraseña</FormLabel>
@@ -66,9 +91,13 @@ const LoginForm = () => {
           )}
         />
         <div className="w-full">
-          <Button type="submit" className="w-full mt-5">
+          <LoadingButton
+            isLoading={isLoading}
+            type="submit"
+            className="w-full mt-5"
+          >
             Iniciar
-          </Button>
+          </LoadingButton>
         </div>
       </form>
     </Form>
