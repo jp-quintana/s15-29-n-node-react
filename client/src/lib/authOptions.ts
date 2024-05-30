@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
 
         const result = await login({ email, password });
 
-        if (result.ok) {
+        if (result?.ok) {
           const { data } = result;
           user = {
             id: data.user.id,
@@ -55,22 +55,6 @@ export const authOptions: NextAuthOptions = {
         }
 
         throw new Error(result.error);
-
-        // const user = {
-        //   id: '1',
-        //   name: 'mock',
-        //   lastName: 'mock',
-        //   email: 'mock@mock.com',
-        //   accessToken:
-        //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-        // };
-
-        // if (user) {
-        //   return user;
-        // }
-
-        // // return null;
-        // throw new Error();
       },
     }),
   ],
