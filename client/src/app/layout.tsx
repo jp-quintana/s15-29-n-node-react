@@ -30,11 +30,13 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <header className="w-full flex justify-center">
-              <MaxWidthContainer className="fixed top-0  bg-background">
-                <Nav />
-              </MaxWidthContainer>
+              <div className="fixed top-0 bg-background z-10 w-full">
+                <MaxWidthContainer>
+                  <Nav />
+                </MaxWidthContainer>
+              </div>
             </header>
-            {children}
+            <div>{children}</div>
           </ThemeProvider>
         </AuthProvider>
       </body>
