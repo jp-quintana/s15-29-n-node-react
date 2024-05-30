@@ -23,20 +23,17 @@ export const register = async (credentials: RegisterCredentials) => {
 
     if (!validateFields.success) {
       throw new CustomError('Campos de registro no válidos.');
-      // throw new Error('Campos de registro no válidos.');
     }
 
     // TODO: pedir manejo de error del lado del server
     const response = await httpClient.post('/auth/register', credentials);
 
     if (!response.ok) throw new CustomError('Hubo un error inesperado');
-    // if (!response.ok) throw new Error('Hubo un error inesperado');
 
     const { data } = await response.json();
     return { ok: true, data };
   } catch (error: any) {
     const message = handleErrorMessage(error);
     return { error: message };
-    // return { error: error.message };
   }
 };

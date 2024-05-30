@@ -43,7 +43,6 @@ const LoginForm = () => {
       redirect: false,
     });
 
-    if (result?.ok) window.location.reload();
     if (result?.error) {
       console.log(result.error);
       toast({
@@ -51,7 +50,10 @@ const LoginForm = () => {
         description: result.error,
       });
       setIsLoading(false);
+      return;
     }
+
+    window.location.reload();
   };
 
   return (

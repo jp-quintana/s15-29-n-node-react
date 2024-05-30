@@ -46,31 +46,30 @@ const RegisterForm = () => {
     const registerResult = await register(values);
 
     if (registerResult?.error) {
-      console.log(registerResult.error);
       toast({
         title: 'Hubo un error',
         description: registerResult.error,
       });
       setIsLoading(false);
+      return;
     }
 
-    if (registerResult?.ok) {
-      const loginResult = await signIn('credentials', {
-        ...values,
-        redirect: false,
+    const loginResult = await signIn('credentials', {
+      ...values,
+      redirect: false,
+    });
+
+    if (loginResult?.error) {
+      console.log(loginResult.error);
+      toast({
+        title: 'Hubo un error',
+        description: loginResult.error,
       });
-
-      if (loginResult?.ok) window.location.reload();
-
-      if (loginResult?.error) {
-        console.log(loginResult.error);
-        toast({
-          title: 'Hubo un error',
-          description: loginResult.error,
-        });
-        setIsLoading(false);
-      }
+      setIsLoading(false);
+      return;
     }
+
+    window.location.reload();
   };
 
   return (

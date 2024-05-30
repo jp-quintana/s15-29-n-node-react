@@ -37,24 +37,23 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Campos de inicio de sesión no válidos.');
         }
 
-        let user;
-
         const result = await login({ email, password });
 
-        if (result?.ok) {
-          const { data } = result;
-          user = {
-            id: data.user.id,
-            name: data.user.name,
-            lastName: data.user.lastName,
-            email: data.user.email,
-            accessToken: data.token,
-          };
-
-          return user;
+        if (!result?.ok) {
+          throw new Error(result.error);
         }
 
-        throw new Error(result.error);
+        const { data } = result;
+
+        const user = {
+          id: data.user.id,
+          name: data.user.name,
+          lastName: data.user.lastName,
+          email: data.user.email,
+          accessToken: data.token,
+        };
+
+        return user;
       },
     }),
   ],
