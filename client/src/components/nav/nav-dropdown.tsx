@@ -26,8 +26,10 @@ import {
   Sun,
   LogIn,
   UserPlus,
+  LogOut,
 } from 'lucide-react';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 interface NavDropdownProps {
   isLoggedIn?: boolean;
@@ -99,6 +101,17 @@ const NavDropdown = ({ isLoggedIn }: NavDropdownProps) => {
             </DropdownMenuPortal>
           </DropdownMenuSub>
         </DropdownMenuGroup>
+        {isLoggedIn && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={async () => await signOut()}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Cerrar sesión</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
