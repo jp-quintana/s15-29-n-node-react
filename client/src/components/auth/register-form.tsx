@@ -17,6 +17,7 @@ import { Button } from '../ui/button';
 import PasswordInput from '../password-input';
 import { signIn } from 'next-auth/react';
 import { registerSchema } from '@/lib/schemas';
+import { register } from '@/services/auth.service';
 
 const RegisterForm = () => {
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -31,9 +32,18 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
-    await signIn('credentials', {
-      ...values,
-    });
+    const registerResult = await register(values);
+
+    if (registerResult?.error) console.log(registerResult.error);
+
+    if (registerResult?.ok) {
+      const loginResult = await signIn('credentials', {
+        ...values,
+        redirect: false,
+      });
+      if (loginResult?.ok) window.location.reload();
+      if (loginResult?.error) console.log(loginResult.error);
+    }
   };
 
   return (

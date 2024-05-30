@@ -1,5 +1,7 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,7 +17,7 @@ import {
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import PasswordInput from '../password-input';
-import { signIn } from 'next-auth/react';
+
 import { loginSchema } from '@/lib/schemas';
 
 const LoginForm = () => {
@@ -28,9 +30,13 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
-    await signIn('credentials', {
+    const result = await signIn('credentials', {
       ...values,
+      redirect: false,
     });
+
+    if (result?.ok) window.location.reload();
+    if (result?.error) console.log(result.error);
   };
 
   return (
