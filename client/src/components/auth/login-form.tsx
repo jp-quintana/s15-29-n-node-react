@@ -19,11 +19,14 @@ import {
 import { Input } from '../ui/input';
 import LoadingButton from '../loading-button';
 import PasswordInput from '../password-input';
+import { useToast } from '@/components/ui/use-toast';
 
 import { loginSchema } from '@/lib/schemas';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -43,6 +46,10 @@ const LoginForm = () => {
     if (result?.ok) window.location.reload();
     if (result?.error) {
       console.log(result.error);
+      toast({
+        title: 'Hubo un error',
+        description: result.error,
+      });
       setIsLoading(false);
     }
   };

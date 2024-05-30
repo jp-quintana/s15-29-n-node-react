@@ -21,11 +21,14 @@ import {
 import { Input } from '../ui/input';
 import LoadingButton from '../loading-button';
 import PasswordInput from '../password-input';
+import { useToast } from '@/components/ui/use-toast';
 
 import { registerSchema } from '@/lib/schemas';
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -44,6 +47,10 @@ const RegisterForm = () => {
 
     if (registerResult?.error) {
       console.log(registerResult.error);
+      toast({
+        title: 'Hubo un error',
+        description: registerResult.error,
+      });
       setIsLoading(false);
     }
 
@@ -57,6 +64,10 @@ const RegisterForm = () => {
 
       if (loginResult?.error) {
         console.log(loginResult.error);
+        toast({
+          title: 'Hubo un error',
+          description: loginResult.error,
+        });
         setIsLoading(false);
       }
     }
