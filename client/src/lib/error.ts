@@ -12,5 +12,5 @@ export const handleErrorMessage = (error: Error) => {
     return error.message;
   }
 
-  return 'Hubo un error';
+  return 'Hubo un error inesperado';
 };
