@@ -144,7 +144,7 @@ const SearchList = ({ queryParamsString }: SearchListProps) => {
 
   console.log({ queryParamsString });
   return (
-    <div>
+    <div className="flex flex-col space-y-4">
       <div className="flex flex-col rounded-sm overflow-hidden bg-secondary">
         {DUMMY_PRODUCTS.map((product, index) => {
           return <SearchCard key={index} {...product} />;
