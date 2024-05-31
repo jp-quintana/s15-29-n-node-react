@@ -19,7 +19,7 @@ const Page = async ({
 
   return (
     <div className="min-h-screen py-20">
-      <MaxWidthContainer>
+      <MaxWidthContainer className="flex flex-col space-y-4">
         <SearchFilters
           sortParam={sortParam}
           queryParamsString={queryParamsString}
