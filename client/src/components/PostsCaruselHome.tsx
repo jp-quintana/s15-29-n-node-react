@@ -169,17 +169,17 @@ export default function PostsCaruselHome() {
 
         <Carousel opts={{
           align:'start',
-          }} className="w-full mx-auto max-w-6xl">
+          }} className="w-full mx-auto max-w-6xl  p-4">
        
         <CarouselContent>
             {portadas.map((item,index) => (
               <CarouselItem key={index} className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                 <div className="p-1">
-                 <div className="">
+                 <div className="shadow-lg">
                   <picture className="relative">
                     <Image src={item.url} alt={item.titulo} width={400} height={400} className="rounded-t-xl w-full" />
-                    <span className={`bg-${item.estadosubasta == 'próximamente' ? 'white': '#d42b42' }]
-                    text-xs absolute top-2 left-2 bg-[#d42b42] py-1 px-2 rounded-full` }
+                    <span className={`
+                    text-xs absolute top-2 left-2 bg-[#d42b42] py-1 px-2 rounded-full text-amber-50` }
                     style={
                     {  backgroundColor: item.estadosubasta==='finalizada' ? '#18208d' : '#d42b42'
                       

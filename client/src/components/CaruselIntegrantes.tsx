@@ -52,10 +52,10 @@ export default function CaruselIntegrantes() {
     }, [api])
    
     return (
-      <div  className="mt-28 mx-auto relative bg-gradient-to-br from-[#0e0614] to-purple-950  
+      <div  className="mt-28 mx-auto relative bg-gradient-to-br from-[#0e0614] to-purple-950 
       max-w-[950px] rounded-2xl p-8 " >
         <Carousel setApi={setApi} className="">
-          <CarouselContent className="max-h-[700px]">
+          <CarouselContent className="max-h-[700px] text-amber-50">
             {portadas.map((item,index) => (
               <CarouselItem key={index} className="">
                 <div className="w-full text-center">
