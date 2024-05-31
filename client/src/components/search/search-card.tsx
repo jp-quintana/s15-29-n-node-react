@@ -38,6 +38,9 @@ const SearchCard = ({
       ? 'bg-white text-red-500'
       : 'bg-foreground text-white';
 
+  // TODO: update
+  console.log(postStatus);
+
   return (
     <Link
       href={`/products/${title}`}
