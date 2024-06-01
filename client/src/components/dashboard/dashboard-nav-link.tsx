@@ -4,14 +4,16 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/button';
 
 interface DashboardNavLinkProps {
-  name: string;
+  id: string;
+  title: string;
   href: string;
   icon: React.ReactNode;
   pathname: string;
 }
 
 const DashboardNavLink = ({
-  name,
+  id,
+  title,
   href,
   icon,
   pathname,
@@ -23,10 +25,10 @@ const DashboardNavLink = ({
         className={cn(
           buttonVariants({ variant: 'link' }),
           'p-0 max-md:leading-none max-md:hover:bg-primary max-md:hover:text-white max-md:h-auto max-md:p-2 max-md:rounded-full',
-          pathname === href ? 'underline' : 'text-foreground'
+          pathname.split('/').includes(id) ? 'underline' : 'text-foreground'
         )}
       >
-        <span className="max-md:hidden">{name}</span>
+        <span className="max-md:hidden">{title}</span>
         {icon}
       </Link>
     </li>

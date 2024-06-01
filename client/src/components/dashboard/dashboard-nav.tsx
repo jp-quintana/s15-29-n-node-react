@@ -10,22 +10,26 @@ import DashboardNavLink from './dashboard-nav-link';
 
 const LINKS = [
   {
-    name: 'Mi perfil',
+    id: 'profile',
+    title: 'Mi perfil',
     href: '/dashboard/profile',
     icon: <Home className="md:hidden" />,
   },
   {
-    name: 'Mis subastas',
+    id: 'auctions',
+    title: 'Mis subastas',
     href: '/dashboard/auctions',
     icon: <Gavel className="md:hidden" />,
   },
   {
-    name: 'Mis ventas directas',
+    id: 'sales',
+    title: 'Mis ventas directas',
     href: '/dashboard/sales',
     icon: <Handshake className="md:hidden" />,
   },
   {
-    name: 'Métricas',
+    id: 'analytics',
+    title: 'Métricas',
     href: '/dashboard/analytics',
     icon: <AreaChart className="md:hidden" />,
   },
@@ -39,8 +43,9 @@ const DashboardNav = () => {
       <ul className="flex space-x-6 items-center max-md:space-x-4">
         {LINKS.map((link) => (
           <DashboardNavLink
-            name={link.name}
-            key={link.href}
+            key={link.id}
+            id={link.id}
+            title={link.title}
             href={link.href}
             icon={link.icon}
             pathname={pathname}
