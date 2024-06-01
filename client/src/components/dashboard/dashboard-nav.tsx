@@ -51,61 +51,6 @@ const DashboardNav = () => {
             pathname={pathname}
           />
         ))}
-        {/* <li>
-          <Link
-            href="/dashboard/profile"
-            className={cn(
-              buttonVariants({ variant: 'link' }),
-              'p-0 max-md:leading-none max-md:hover:bg-primary max-md:hover:text-white max-md:h-auto max-md:p-1 max-md:rounded-full',
-              pathname === '/dashboard/profile'
-                ? 'underline'
-                : 'text-foreground'
-            )}
-          >
-            <span className="max-md:hidden">Mi perfil</span>
-            <Home className="md:hidden" />
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/dashboard/auctions"
-            className={cn(
-              buttonVariants({ variant: 'link' }),
-              'px-0',
-              pathname === '/dashboard/auctions'
-                ? 'underline'
-                : 'text-foreground'
-            )}
-          >
-            <span>Mis subastas</span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/dashboard/sales"
-            className={cn(
-              buttonVariants({ variant: 'link' }),
-              'px-0',
-              pathname === '/dashboard/sales' ? 'underline' : 'text-foreground'
-            )}
-          >
-            <span>Mis ventas directas</span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/dashboard/analytics"
-            className={cn(
-              buttonVariants({ variant: 'link' }),
-              'px-0',
-              pathname === '/dashboard/analytics'
-                ? 'underline'
-                : 'text-foreground'
-            )}
-          >
-            <span>Métricas</span>
-          </Link>
-        </li> */}
       </ul>
       <LogoutButton />
     </div>
