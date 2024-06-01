@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 
 import LogoutButton from '../logout-button';
 
-import { Home } from 'lucide-react';
+import { Home, Handshake, Gavel, AreaChart } from 'lucide-react';
 
 import DashboardNavLink from './dashboard-nav-link';
 
@@ -17,17 +17,17 @@ const LINKS = [
   {
     name: 'Mis subastas',
     href: '/dashboard/auctions',
-    icon: <Home className="md:hidden" />,
+    icon: <Gavel className="md:hidden" />,
   },
   {
     name: 'Mis ventas directas',
     href: '/dashboard/sales',
-    icon: <Home className="md:hidden" />,
+    icon: <Handshake className="md:hidden" />,
   },
   {
     name: 'Métricas',
     href: '/dashboard/analytics',
-    icon: <Home className="md:hidden" />,
+    icon: <AreaChart className="md:hidden" />,
   },
 ];
 
@@ -36,7 +36,7 @@ const DashboardNav = () => {
 
   return (
     <div className="flex justify-between items-center">
-      <ul className="flex space-x-6 items-center">
+      <ul className="flex space-x-6 items-center max-md:space-x-4">
         {LINKS.map((link) => (
           <DashboardNavLink
             name={link.name}
