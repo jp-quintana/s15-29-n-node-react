@@ -1,13 +1,15 @@
-import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-import { authOptions } from '@/lib/authOptions';
+// import { getServerSession } from 'next-auth';
+
+// import { authOptions } from '@/lib/authOptions';
 
 const Page = async () => {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
 
-  console.log(session);
+  // console.log(session);
 
-  return <div>Profile</div>;
+  return redirect('/dashboard/profile/edit');
 };
 
 export default Page;

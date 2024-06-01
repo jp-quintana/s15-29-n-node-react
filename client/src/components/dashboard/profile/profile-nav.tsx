@@ -1,5 +1,5 @@
 const ProfileNav = () => {
-  return <div>ProfileNav</div>;
+  return <div className="bg-secondary">ProfileNav</div>;
 };
 
 export default ProfileNav;

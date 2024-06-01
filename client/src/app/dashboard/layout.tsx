@@ -6,10 +6,8 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log('render');
-
   return (
-    <div className="py-20 min-h-screen">
+    <div className="py-20 min-h-screen flex flex-col space-y-4">
       <MaxWidthContainer>
         <DashboardNav />
         {children}
