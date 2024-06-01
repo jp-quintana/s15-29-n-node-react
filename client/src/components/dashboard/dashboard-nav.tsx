@@ -2,20 +2,51 @@
 
 import { usePathname } from 'next/navigation';
 
-import Link from 'next/link';
 import LogoutButton from '../logout-button';
 
 import { Home } from 'lucide-react';
 
-import { buttonVariants } from '../ui/button';
-import { cn } from '@/lib/utils';
+import DashboardNavLink from './dashboard-nav-link';
+
+const LINKS = [
+  {
+    name: 'Mi perfil',
+    href: '/dashboard/profile',
+    icon: <Home className="md:hidden" />,
+  },
+  {
+    name: 'Mis subastas',
+    href: '/dashboard/auctions',
+    icon: <Home className="md:hidden" />,
+  },
+  {
+    name: 'Mis ventas directas',
+    href: '/dashboard/sales',
+    icon: <Home className="md:hidden" />,
+  },
+  {
+    name: 'Métricas',
+    href: '/dashboard/analytics',
+    icon: <Home className="md:hidden" />,
+  },
+];
 
 const DashboardNav = () => {
   const pathname = usePathname();
+
   return (
     <div className="flex justify-between items-center">
       <ul className="flex space-x-6 items-center">
-        <li>
+        {LINKS.map((link) => (
+          <DashboardNavLink
+            name={link.name}
+            key={link.href}
+            href={link.href}
+            icon={link.icon}
+            pathname={pathname}
+          />
+        ))}
+        {/* <li>
           <Link
             href="/dashboard/profile"
             className={cn(
@@ -69,7 +100,7 @@ const DashboardNav = () => {
           >
             <span>Métricas</span>
           </Link>
-        </li>
+        </li> */}
       </ul>
       <LogoutButton />
     </div>
