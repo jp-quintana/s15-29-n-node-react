@@ -6,7 +6,7 @@ import LogoutButton from '../logout-button';
 
 import { Home, Handshake, Gavel, AreaChart } from 'lucide-react';
 
-import DashboardNavLink from './dashboard-nav-link';
+import NavIconLink from './nav-icon-link';
 
 const LINKS = [
   {
@@ -42,13 +42,14 @@ const DashboardNav = () => {
     <div className="flex justify-between items-center">
       <ul className="flex space-x-6 items-center max-md:space-x-4">
         {LINKS.map((link) => (
-          <DashboardNavLink
+          <NavIconLink
             key={link.id}
             id={link.id}
             title={link.title}
             href={link.href}
             icon={link.icon}
             pathname={pathname}
+            variant="link"
           />
         ))}
       </ul>
