@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Page = () => {
-  return <div className="bg-secondary h-full p-2">Page</div>;
+  return <div className="bg-secondary h-full p-6">Page</div>;
 };
 
 export default Page;

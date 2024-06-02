@@ -9,7 +9,6 @@ interface NavIconLinkProps {
   href: string;
   icon: React.ReactNode;
   pathname: string;
-  linkSelectedStyles?: string;
   variant?:
     | 'default'
     | 'destructive'
@@ -19,6 +18,8 @@ interface NavIconLinkProps {
     | 'link'
     | null
     | undefined;
+  textIsHidden?: boolean;
+  linkSelectedStyles?: string;
   className?: string;
 }
 
@@ -29,6 +30,7 @@ const NavIconLink = ({
   icon,
   pathname,
   variant,
+  textIsHidden,
   linkSelectedStyles,
   className,
 }: NavIconLinkProps) => {
@@ -38,7 +40,7 @@ const NavIconLink = ({
         href={href}
         className={cn(
           variant && buttonVariants({ variant: variant }),
-          'p-0 max-md:leading-none max-md:hover:bg-primary max-md:hover:text-white max-md:h-auto max-md:p-2 max-md:rounded-full flex items-center gap-2',
+          'p-0 max-md:leading-none max-md:hover:bg-primary max-md:hover:text-white max-md:h-auto max-md:p-2 max-md:rounded-full flex items-center gap-3',
           pathname.split('/').includes(id)
             ? linkSelectedStyles || 'underline'
             : 'text-foreground',
@@ -46,7 +48,11 @@ const NavIconLink = ({
         )}
       >
         {icon}
-        <span className="max-md:hidden">{title}</span>
+        <span
+          className={cn('max-md:hidden truncate', textIsHidden && 'hidden')}
+        >
+          {title}
+        </span>
       </Link>
     </li>
   );

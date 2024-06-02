@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import ProfileNav from '@/components/dashboard/profile/profile-nav';
 import {
   ResizableHandle,
@@ -10,15 +13,20 @@ export default function ProfileLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [navIsCollapsed, setIsNavCollapsed] = useState(false);
+
   return (
     <ResizablePanelGroup direction="horizontal" className="border rounded-sm">
       <ResizablePanel
-        defaultSize={25}
+        defaultSize={22}
         minSize={18}
+        maxSize={22}
         collapsible
-        className="min-w-12"
+        className="min-w-16 max-md:max-w-16"
+        onCollapse={() => setIsNavCollapsed(true)}
+        onExpand={() => setIsNavCollapsed(false)}
       >
-        <ProfileNav />
+        <ProfileNav navIsCollapsed={navIsCollapsed} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={75}>{children}</ResizablePanel>
