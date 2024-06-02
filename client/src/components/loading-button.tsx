@@ -7,6 +7,7 @@ import Spinner from './spinner';
 interface LoadingButtonProps {
   children: React.ReactNode;
   isLoading: boolean;
+  onClick?: () => void;
   type?: 'submit' | 'reset' | 'button' | undefined;
   variant?:
     | 'default'
@@ -23,12 +24,14 @@ interface LoadingButtonProps {
 const LoadingButton = ({
   children,
   isLoading,
+  onClick,
   type,
   variant,
   className,
 }: LoadingButtonProps) => {
   return (
     <Button
+      onClick={onClick}
       type={type}
       variant={variant}
       className={cn('relative', className)}

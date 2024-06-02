@@ -29,7 +29,7 @@ export default function ProfileLayout({
         <ProfileNav navIsCollapsed={navIsCollapsed} />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={75}>{children}</ResizablePanel>
+      <ResizablePanel defaultSize={78}>{children}</ResizablePanel>
     </ResizablePanelGroup>
   );
 }

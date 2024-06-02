@@ -14,7 +14,7 @@ const LogoutButton = ({ className }: LogoutButtonProps) => {
   };
 
   return (
-    <Button className={cn(className)} onClick={handleLogout}>
+    <Button variant="outline" className={cn(className)} onClick={handleLogout}>
       Cerrar sesión
     </Button>
   );
