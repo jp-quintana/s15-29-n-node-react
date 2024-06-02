@@ -2,13 +2,22 @@
 
 import { signOut } from 'next-auth/react';
 import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
 
-const LogoutButton = () => {
+interface LogoutButtonProps {
+  className?: string;
+}
+
+const LogoutButton = ({ className }: LogoutButtonProps) => {
   const handleLogout = async () => {
     await signOut();
   };
 
-  return <Button onClick={handleLogout}>Logout</Button>;
+  return (
+    <Button className={cn(className)} onClick={handleLogout}>
+      Cerrar sesión
+    </Button>
+  );
 };
 
 export default LogoutButton;

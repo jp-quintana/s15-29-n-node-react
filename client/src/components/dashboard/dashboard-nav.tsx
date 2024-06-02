@@ -40,7 +40,7 @@ const DashboardNav = () => {
 
   return (
     <div className="flex justify-between items-center">
-      <ul className="flex space-x-6 items-center max-md:space-x-4">
+      <ul className="flex space-x-6 items-center max-md:space-x-4 rounded-md md:px-3 border">
         {LINKS.map((link) => (
           <NavIconLink
             key={link.id}
@@ -50,10 +50,13 @@ const DashboardNav = () => {
             icon={link.icon}
             pathname={pathname}
             variant="link"
+            linkSelectedStyles="max-md:bg-primary max-md:text-background"
+            listItemStyles="max-md:min-w-16 max-md:flex max-md:justify-center"
+            className="max-md:hover:bg-secondary"
           />
         ))}
       </ul>
-      <LogoutButton />
+      <LogoutButton className="max-sm:hidden" />
     </div>
   );
 };

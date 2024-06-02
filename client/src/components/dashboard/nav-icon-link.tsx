@@ -19,6 +19,7 @@ interface NavIconLinkProps {
     | null
     | undefined;
   textIsHidden?: boolean;
+  listItemStyles?: string;
   linkSelectedStyles?: string;
   className?: string;
 }
@@ -31,18 +32,20 @@ const NavIconLink = ({
   pathname,
   variant,
   textIsHidden,
+  listItemStyles,
   linkSelectedStyles,
   className,
 }: NavIconLinkProps) => {
+  const linkIsSelected = pathname.split('/').includes(id);
   return (
-    <li>
+    <li className={cn(listItemStyles)}>
       <Link
         href={href}
         className={cn(
           variant && buttonVariants({ variant: variant }),
-          'p-0 max-md:leading-none max-md:hover:bg-primary max-md:hover:text-white max-md:h-auto max-md:p-2 max-md:rounded-full flex items-center gap-3',
-          pathname.split('/').includes(id)
-            ? linkSelectedStyles || 'underline'
+          'p-0 max-md:leading-none max-md:h-auto max-md:p-2 max-md:rounded-full flex items-center gap-3',
+          linkIsSelected
+            ? `${linkSelectedStyles || 'underline'} pointer-events-none`
             : 'text-foreground',
           className
         )}

@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className="py-20 min-h-screen flex flex-col space-y-4">
-      <MaxWidthContainer>
+      <MaxWidthContainer className="flex flex-col space-y-6">
         <DashboardNav />
         {children}
       </MaxWidthContainer>
