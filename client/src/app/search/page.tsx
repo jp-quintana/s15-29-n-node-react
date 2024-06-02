@@ -9,10 +9,10 @@ const Page = async ({
 }) => {
   const queryParams = new URLSearchParams();
 
-  const nameParam = searchParams.name;
+  const sParam = searchParams.s;
   const sortParam = searchParams.sort;
 
-  if (nameParam && nameParam.length > 0) queryParams.set('name', nameParam);
+  if (sParam && sParam.length > 0) queryParams.set('name', sParam);
   if (sortParam && sortParam.length > 0) queryParams.set('sort', sortParam);
 
   const queryParamsString = queryParams.toString();
