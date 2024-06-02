@@ -53,7 +53,7 @@ const ProfileNav = ({ navIsCollapsed }: ProfileNavProps) => {
             pathname={pathname}
             textIsHidden={navIsCollapsed}
             linkSelectedStyles="font-bold"
-            className="max-md:hover:bg-foreground"
+            className="max-md:hover:bg-foreground max-md:hover:text-background"
           />
         ))}
       </ul>
