@@ -1,11 +1,18 @@
-
-
 import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
 
 export default withAuth(
   function middleware(req) {
-    const protectedRoutes = ['/payment', '/profile', '/publish'];
+    const protectedRoutes = [
+      '/payment',
+      '/dashboard',
+      '/publish',
+      '/dashboard/profile',
+      '/dashboard/profile/edit',
+      '/dashboard/profile/account-settings',
+      '/dashboard/profile/notifications',
+      '/dashboard/profile/privacy',
+    ];
     const authRoutes = ['/login', '/register'];
 
     const { nextUrl } = req;

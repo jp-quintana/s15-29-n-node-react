@@ -52,7 +52,7 @@ const NavDropdown = ({ isLoggedIn }: NavDropdownProps) => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/profile" className="flex">
+                <Link href="/dashboard/profile" className="flex">
                   <User className="mr-2 h-4 w-4" />
                   <span>Perfil</span>
                 </Link>

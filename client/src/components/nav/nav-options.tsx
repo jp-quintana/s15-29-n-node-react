@@ -31,7 +31,7 @@ const NavOptions = () => {
           <ul className={cn('flex space-x-4', isMobile && 'hidden')}>
             {isLoggedIn && (
               <li>
-                <Link href="/profile" className={buttonVariants()}>
+                <Link href="/dashboard/profile" className={buttonVariants()}>
                   Mi cuenta
                 </Link>
               </li>
