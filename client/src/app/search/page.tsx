@@ -10,7 +10,10 @@ const Page = async ({
   const queryParams = new URLSearchParams();
 
   const sParam = searchParams.s;
+  const tParam = searchParams.t === 'auction' ? 'auction' : 'sale';
   const sortParam = searchParams.sort;
+
+  console.log({ tParam });
 
   if (sParam && sParam.length > 0) queryParams.set('name', sParam);
   if (sortParam && sortParam.length > 0) queryParams.set('sort', sortParam);
@@ -21,6 +24,8 @@ const Page = async ({
     <div className="min-h-screen py-20">
       <MaxWidthContainer className="flex flex-col space-y-4">
         <SearchFilters
+          sParam={sParam}
+          tParam={tParam}
           sortParam={sortParam}
           queryParamsString={queryParamsString}
         />

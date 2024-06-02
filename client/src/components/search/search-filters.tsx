@@ -1,11 +1,15 @@
 import SearchSortBySelect from './search-sort-by-select';
 
 interface SearchFiltersProps {
+  sParam: string | undefined;
+  tParam: 'sale' | 'auction';
   sortParam: string | undefined;
   queryParamsString: string;
 }
 
 const SearchFilters = ({
+  sParam,
+  tParam,
   sortParam,
   queryParamsString,
 }: SearchFiltersProps) => {
