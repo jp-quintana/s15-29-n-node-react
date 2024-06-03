@@ -15,6 +15,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '../ui/input';
 
+import { searchFiltersSchema } from '@/lib/schemas';
+
 const TYPES = [
   {
     id: 'sale',
