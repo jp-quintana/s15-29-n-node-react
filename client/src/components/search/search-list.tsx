@@ -152,33 +152,31 @@ const SearchList = ({ queryParamsString }: SearchListProps) => {
 
   useEffect(() => {
     setIsLoading(true);
-    if (session?.user?.accessToken) {
-      const currentQueryParams = new URLSearchParams(queryParamsString);
+    const currentQueryParams = new URLSearchParams(queryParamsString);
 
-      const tParam = currentQueryParams.get('t') as 'sale' | 'auction';
+    const tParam = currentQueryParams.get('t') as 'sale' | 'auction';
 
-      (async () => {
-        if (tParam === 'auction') {
-          // TODO: fetch auctions
-          return;
-        }
+    (async () => {
+      if (tParam === 'auction') {
+        // TODO: fetch auctions
+        return;
+      }
 
-        const result = await getProductsBySearch(queryParamsString, {
-          Authorization: `Bearer ${session?.user?.accessToken}`,
-        });
+      const result = await getProductsBySearch(queryParamsString, {
+        Authorization: `Bearer ${session?.user?.accessToken}`,
+      });
 
-        if (!result.ok) {
-          setIsLoading(false);
-          return;
-        }
-
-        console.log({ result });
-
-        setPosts(result.data.products);
+      if (!result.ok) {
         setIsLoading(false);
-      })();
-    }
-  }, [queryParamsString, session?.user?.accessToken]);
+        return;
+      }
+
+      console.log({ result });
+
+      setPosts(result.data.products);
+      setIsLoading(false);
+    })();
+  }, [queryParamsString]);
 
   console.log({ posts });
 

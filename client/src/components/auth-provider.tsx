@@ -3,9 +3,18 @@
 import React from 'react';
 import { SessionProvider } from 'next-auth/react';
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+import { Session } from 'next-auth';
+
+interface AuthProviderProps {
+  children: React.ReactNode;
+  session: Session | null;
+}
+
+const AuthProvider = ({ children, session }: AuthProviderProps) => {
   return (
-    <SessionProvider refetchOnWindowFocus={false}>{children}</SessionProvider>
+    <SessionProvider session={session} refetchOnWindowFocus={false}>
+      {children}
+    </SessionProvider>
   );
 };
 
