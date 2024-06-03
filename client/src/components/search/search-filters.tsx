@@ -8,12 +8,12 @@ export interface SearchFiltersProps {
 
 const SearchFilters = ({ queryParamsString }: SearchFiltersProps) => {
   return (
-    <div className="flex space-x-4 justify-between">
-      <div className="relative flex items-center">
+    <div>
+      <div className="flex space-x-4 justify-between">
         <SearchFiltersSheet queryParamsString={queryParamsString} />
-        <SearchFilterTags queryParamsString={queryParamsString} />
+        <SearchSortBySelect queryParamsString={queryParamsString} />
       </div>
-      <SearchSortBySelect queryParamsString={queryParamsString} />
+      <SearchFilterTags queryParamsString={queryParamsString} />
     </div>
   );
 };
