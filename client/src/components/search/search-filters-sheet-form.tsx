@@ -82,7 +82,7 @@ const SearchFiltersSheetForm = ({
     resolver: zodResolver(searchFiltersSchema),
     defaultValues: {
       type: tParam,
-      category: cParam || undefined,
+      category: cParam || '',
       min: minParam || '',
       max: maxParam || '',
     },
@@ -96,9 +96,21 @@ const SearchFiltersSheetForm = ({
     const updatedQueryParams = new URLSearchParams(queryParamsString);
 
     if (data.type) updatedQueryParams.set('t', data.type);
-    if (data.category) updatedQueryParams.set('c', data.category);
-    if (data.min) updatedQueryParams.set('min', data.min);
-    if (data.max) updatedQueryParams.set('max', data.max);
+    if (data.category) {
+      updatedQueryParams.set('c', data.category);
+    } else {
+      updatedQueryParams.delete('c');
+    }
+    if (data.min) {
+      updatedQueryParams.set('min', data.min);
+    } else {
+      updatedQueryParams.delete('min');
+    }
+    if (data.max) {
+      updatedQueryParams.set('max', data.max);
+    } else {
+      updatedQueryParams.delete('max');
+    }
 
     router.push(`search?${updatedQueryParams.toString()}`);
     handleClose();
@@ -159,10 +171,15 @@ const SearchFiltersSheetForm = ({
                   <FormControl>
                     <Checkbox
                       checked={field.value === category.id}
+                      // onCheckedChange={(checked) => {
+                      //   return checked
+                      //     ? field.onChange(category.id)
+                      //     : field.onChange(undefined);
+                      // }}
                       onCheckedChange={(checked) => {
                         return checked
                           ? field.onChange(category.id)
-                          : field.onChange(undefined);
+                          : field.onChange('');
                       }}
                     />
                   </FormControl>
