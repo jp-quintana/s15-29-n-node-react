@@ -53,30 +53,13 @@ const CATEGORIES = [
   },
 ] as const;
 
-const FormSchema = z.object({
-  type: z.string().optional(),
-  category: z.string().optional(),
-  min: z
-    .string()
-    .refine((val) => val === '' || /^\d+$/.test(val), {
-      message: '¡Los valores deben ser números enteros!',
-    })
-    .optional(),
-  max: z
-    .string()
-    .refine((val) => val === '' || /^\d+$/.test(val), {
-      message: '¡Los valores deben ser números enteros!',
-    })
-    .optional(),
-});
-
 interface SearchFilterSheetFormProps {
   handleClose: () => void;
 }
 
 const SearchFilterSheetForm = ({ handleClose }: SearchFilterSheetFormProps) => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof searchFiltersSchema>>({
+    resolver: zodResolver(searchFiltersSchema),
     defaultValues: {
       type: 'sale',
       category: undefined,
@@ -91,7 +74,7 @@ const SearchFilterSheetForm = ({ handleClose }: SearchFilterSheetFormProps) => {
 
   // console.log(errors);
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: z.infer<typeof searchFiltersSchema>) {
     console.log({ data });
     console.log({ errors });
     handleClose();
