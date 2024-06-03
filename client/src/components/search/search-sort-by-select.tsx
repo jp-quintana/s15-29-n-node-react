@@ -11,7 +11,7 @@ import {
 } from '../ui/select';
 
 interface SearchSortBySelectProps {
-  sortParam: string | undefined;
+  sortParam: 'asc' | 'desc';
   queryParamsString: string;
 }
 
@@ -21,8 +21,7 @@ const SearchSortBySelect = ({
 }: SearchSortBySelectProps) => {
   const router = useRouter();
 
-  const selectDefaultValue =
-    sortParam && sortParam.length > 0 ? sortParam : 'featured';
+  console.log({ queryParamsString });
 
   const handleSelect = (value: string) => {
     const updatedQueryParams = new URLSearchParams(queryParamsString);
@@ -31,8 +30,9 @@ const SearchSortBySelect = ({
 
     router.push(`search?${updatedQueryParams.toString()}`);
   };
+
   return (
-    <Select defaultValue={selectDefaultValue} onValueChange={handleSelect}>
+    <Select defaultValue={sortParam} onValueChange={handleSelect}>
       <SelectTrigger className="max-w-[200px] w-full">
         <div className="truncate">
           <span>Ordenar por: </span>
@@ -41,9 +41,9 @@ const SearchSortBySelect = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="featured">Destacados</SelectItem>
-          <SelectItem value="low">Menor precio</SelectItem>
-          <SelectItem value="high">Mayor precio</SelectItem>
+          {/* <SelectItem value="featured">Destacados</SelectItem> */}
+          <SelectItem value="asc">Menor precio</SelectItem>
+          <SelectItem value="desc">Mayor precio</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

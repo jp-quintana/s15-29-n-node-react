@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -16,6 +18,7 @@ import {
 import { Input } from '../ui/input';
 
 import { searchFiltersSchema } from '@/lib/schemas';
+import { SearchFiltersSheetProps } from './search-filters-sheet';
 
 const TYPES = [
   {
@@ -55,20 +58,27 @@ const CATEGORIES = [
   },
 ] as const;
 
-interface SearchFiltersSheetFormProps {
+interface SearchFiltersSheetFormProps extends SearchFiltersSheetProps {
   handleClose: () => void;
 }
 
 const SearchFiltersSheetForm = ({
+  tParam,
+  cParam,
+  minParam,
+  maxParam,
+  queryParamsString,
   handleClose,
 }: SearchFiltersSheetFormProps) => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof searchFiltersSchema>>({
     resolver: zodResolver(searchFiltersSchema),
     defaultValues: {
-      type: 'sale',
-      category: undefined,
-      min: '',
-      max: '',
+      type: tParam,
+      category: cParam || undefined,
+      min: minParam || '',
+      max: maxParam || '',
     },
   });
 
@@ -76,11 +86,17 @@ const SearchFiltersSheetForm = ({
     formState: { errors },
   } = form;
 
-  // console.log(errors);
-
   function onSubmit(data: z.infer<typeof searchFiltersSchema>) {
     console.log({ data });
-    console.log({ errors });
+
+    const updatedQueryParams = new URLSearchParams(queryParamsString);
+
+    if (data.type) updatedQueryParams.set('t', data.type);
+    if (data.category) updatedQueryParams.set('c', data.category);
+    if (data.min) updatedQueryParams.set('min', data.min);
+    if (data.max) updatedQueryParams.set('max', data.max);
+
+    router.push(`search?${updatedQueryParams.toString()}`);
     handleClose();
   }
 
