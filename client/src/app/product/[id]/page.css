@@ -1,0 +1,45 @@
+.product-title {
+  @apply font-bold text-3xl;
+}
+.product-title-summary {
+  @apply font-normal text-2xl;
+}
+.product-end-date-information {
+  @apply flex align-middle gap-2 text-base;
+}
+.product-information-container-main {
+  @apply flex flex-col  p-2 min-h-[36rem] gap-3;
+}
+.product-information-main {
+  @apply flex flex-grow flex-col md:flex-row gap-2;
+}
+.product-information-seller {
+  @apply md:w-1/2;
+}
+.product-seller-details {
+  @apply p-8 border h-full shadow-lg m-auto w-2/3 flex flex-col gap-2;
+}
+.product-carousel-container {
+  @apply flex flex-col align-middle justify-center h-full w-full max-w-lg  m-auto relative;
+}
+.product-information-title {
+  @apply font-bold text-lg leading-[1rem];
+}
+.product-information-title-location {
+  @apply text-sm font-light;
+}
+.product-open-information-title {
+  @apply text-lg font-semibold;
+}
+.product-line-spacing {
+  @apply bg-slate-300 w-full h-0.5;
+}
+.product-description-title {
+  @apply border-b-2 uppercase text-lg font-semibold;
+}
+.product-description-details {
+  @apply flex flex-col gap-2 py-2;
+}
+.product-description-details-title {
+  @apply text-xl uppercase text-slate-700;
+}
