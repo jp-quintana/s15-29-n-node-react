@@ -1,7 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import SearchCard from './search-card';
 import SearchPagination from './search-pagination';
+import { getProductsBySearch } from '@/services/product.service';
+import { useSession } from 'next-auth/react';
 
 let DUMMY_PRODUCTS: {
   url: string;
@@ -140,9 +144,42 @@ interface SearchListProps {
 }
 
 const SearchList = ({ queryParamsString }: SearchListProps) => {
-  // TODO: fetch products
+  // TODO: remove session logic when endpoint is corrected
+  const { data: session } = useSession();
 
-  console.log({ queryParamsString });
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (session?.user?.accessToken) {
+      const currentQueryParams = new URLSearchParams(queryParamsString);
+
+      const tParam = currentQueryParams.get('t') as 'sale' | 'auction';
+
+      (async () => {
+        if (tParam === 'auction') {
+          // TODO: fetch auctions
+          return;
+        }
+
+        const result = await getProductsBySearch(queryParamsString, {
+          Authorization: `Bearer ${session?.user?.accessToken}`,
+        });
+
+        if (!result.ok) {
+          setIsLoading(false);
+          return;
+        }
+
+        setPosts(result.data.products);
+        setIsLoading(false);
+      })();
+    }
+  }, [queryParamsString, session?.user?.accessToken]);
+
+  console.log({ posts });
+
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex flex-col rounded-sm overflow-hidden bg-secondary">

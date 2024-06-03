@@ -73,7 +73,7 @@ const SearchFiltersSheetForm = ({
   const router = useRouter();
 
   const currentQueryParams = new URLSearchParams(queryParamsString);
-  const tParam = currentQueryParams.get('t') as string;
+  const tParam = currentQueryParams.get('t') as 'sale' | 'auction';
   const cParam = currentQueryParams.get('c');
   const minParam = currentQueryParams.get('min');
   const maxParam = currentQueryParams.get('max');

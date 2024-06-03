@@ -9,10 +9,12 @@ const formatURL = (url: string) => {
 };
 
 class HttpClient {
-  async get(url: string) {
+  async get(url: string, headers: { [key: string]: string } = {}) {
     const formattedURL = formatURL(url);
 
-    return await fetch(API_BASE_URL + formattedURL);
+    return await fetch(API_BASE_URL + formattedURL, {
+      headers: { ...headers },
+    });
   }
 
   async post(url: string, body: any, headers: { [key: string]: string } = {}) {
