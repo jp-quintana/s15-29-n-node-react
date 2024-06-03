@@ -63,14 +63,20 @@ interface SearchFiltersSheetFormProps extends SearchFiltersSheetProps {
 }
 
 const SearchFiltersSheetForm = ({
-  tParam,
-  cParam,
-  minParam,
-  maxParam,
+  // tParam,
+  // cParam,
+  // minParam,
+  // maxParam,
   queryParamsString,
   handleClose,
 }: SearchFiltersSheetFormProps) => {
   const router = useRouter();
+
+  const currentQueryParams = new URLSearchParams(queryParamsString);
+  const tParam = currentQueryParams.get('t') as string;
+  const cParam = currentQueryParams.get('c');
+  const minParam = currentQueryParams.get('min');
+  const maxParam = currentQueryParams.get('max');
 
   const form = useForm<z.infer<typeof searchFiltersSchema>>({
     resolver: zodResolver(searchFiltersSchema),
@@ -87,8 +93,6 @@ const SearchFiltersSheetForm = ({
   } = form;
 
   function onSubmit(data: z.infer<typeof searchFiltersSchema>) {
-    console.log({ data });
-
     const updatedQueryParams = new URLSearchParams(queryParamsString);
 
     if (data.type) updatedQueryParams.set('t', data.type);

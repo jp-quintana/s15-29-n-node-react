@@ -10,18 +10,15 @@ import {
   SelectValue,
 } from '../ui/select';
 
-interface SearchSortBySelectProps {
-  sortParam: 'asc' | 'desc';
-  queryParamsString: string;
-}
+import { SearchFiltersProps } from './search-filters';
 
-const SearchSortBySelect = ({
-  sortParam,
-  queryParamsString,
-}: SearchSortBySelectProps) => {
+interface SearchSortBySelectProps extends SearchFiltersProps {}
+
+const SearchSortBySelect = ({ queryParamsString }: SearchSortBySelectProps) => {
   const router = useRouter();
 
-  console.log({ queryParamsString });
+  const currentQueryParams = new URLSearchParams(queryParamsString);
+  const sortParam = currentQueryParams.get('sort') as 'asc' | 'desc';
 
   const handleSelect = (value: string) => {
     const updatedQueryParams = new URLSearchParams(queryParamsString);

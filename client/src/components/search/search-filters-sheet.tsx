@@ -16,27 +16,10 @@ import {
 import SearchFiltersSheetForm from './search-filters-sheet-form';
 
 export interface SearchFiltersSheetProps {
-  tParam: 'sale' | 'auction';
-  cParam:
-    | 'art'
-    | 'antiques'
-    | 'collectibles'
-    | 'technology'
-    | 'vehicles'
-    | 'real-estate'
-    | undefined;
-  minParam: string | undefined;
-  maxParam: string | undefined;
   queryParamsString: string;
 }
 
-const SearchFiltersSheet = ({
-  tParam,
-  cParam,
-  minParam,
-  maxParam,
-  queryParamsString,
-}: SearchFiltersSheetProps) => {
+const SearchFiltersSheet = ({ queryParamsString }: SearchFiltersSheetProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -59,10 +42,6 @@ const SearchFiltersSheet = ({
         {/* TODO: add search filter tags */}
         {/* </div> */}
         <SearchFiltersSheetForm
-          tParam={tParam}
-          cParam={cParam}
-          minParam={minParam}
-          maxParam={maxParam}
           queryParamsString={queryParamsString}
           handleClose={() => setIsOpen(false)}
         />
