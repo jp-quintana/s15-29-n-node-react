@@ -56,7 +56,7 @@ const SearchFilterTags = ({ queryParamsString }: SearchFilterTagsProps) => {
       {tags.map((tag) => (
         <Badge
           key={tag}
-          className="bg-foreground text-nowrap hover:bg-foreground"
+          className="bg-foreground text-background text-nowrap hover:bg-foreground"
         >
           {tag}
         </Badge>
