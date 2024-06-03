@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { z } from 'zod';
@@ -38,14 +38,6 @@ const ProfileEditForm = () => {
     setIsEditing(false);
     console.log(values);
   };
-
-  useEffect(() => {
-    if (session?.user)
-      form.reset({
-        name: session.user.name || '',
-        lastName: session.user.lastName || '',
-      });
-  }, [session, form]);
 
   return (
     session?.user && (
