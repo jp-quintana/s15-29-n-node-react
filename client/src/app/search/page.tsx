@@ -2,14 +2,6 @@ import MaxWidthContainer from '@/components/max-width-container';
 import SearchFilters from '@/components/search/search-filters';
 import SearchList from '@/components/search/search-list';
 
-type CategoryId =
-  | 'art'
-  | 'antiques'
-  | 'collectibles'
-  | 'technology'
-  | 'vehicles'
-  | 'real-estate';
-
 const Page = async ({
   searchParams,
 }: {
@@ -30,9 +22,10 @@ const Page = async ({
       'vehicles',
       'real-estate',
     ].includes(searchParams.c.toLowerCase())
-      ? (searchParams.c.toLowerCase() as CategoryId)
+      ? searchParams.c.toLowerCase()
       : undefined;
-  const sortParam = searchParams.sort?.toLowerCase() === 'desc' ? 'asc' : 'asc';
+  const sortParam =
+    searchParams.sort?.toLowerCase() === 'desc' ? 'desc' : 'asc';
   const pageParam =
     typeof searchParams.pageParam === 'string' &&
     /^\d+$/.test(searchParams.pageParam)
@@ -52,24 +45,15 @@ const Page = async ({
   queryParams.set('page', pageParam);
   if (sParam && sParam.length > 0) queryParams.set('s', sParam);
   if (cParam) queryParams.set('c', cParam);
-  if (minParam) queryParams.set('c', minParam);
-  if (maxParam) queryParams.set('c', maxParam);
+  if (minParam) queryParams.set('min', minParam);
+  if (maxParam) queryParams.set('max', maxParam);
 
   const queryParamsString = queryParams.toString();
 
   return (
     <div className="min-h-screen py-20">
       <MaxWidthContainer className="flex flex-col space-y-4">
-        <SearchFilters
-          sParam={sParam}
-          tParam={tParam}
-          cParam={cParam}
-          sortParam={sortParam}
-          pageParam={pageParam}
-          minParam={minParam}
-          maxParam={maxParam}
-          queryParamsString={queryParamsString}
-        />
+        <SearchFilters queryParamsString={queryParamsString} />
         <SearchList queryParamsString={queryParamsString} />
       </MaxWidthContainer>
     </div>
