@@ -19,9 +19,9 @@ const NavSearchInput = () => {
     const formattedQueryString = inputValue.replace(/\s+/g, '-').trim();
 
     if (formattedQueryString.length > 0) {
-      router.push(`/search?name=${formattedQueryString}`);
+      router.push(`/search?s=${formattedQueryString}&t=sale`);
     } else {
-      router.push('/search');
+      router.push(`/search?t=sale`);
     }
   };
 

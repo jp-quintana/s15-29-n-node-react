@@ -6,7 +6,7 @@ export class CustomError extends Error {
 }
 
 export const handleErrorMessage = (error: Error) => {
-  console.log(error);
+  console.log({ error });
 
   if (error instanceof CustomError) {
     return error.message;

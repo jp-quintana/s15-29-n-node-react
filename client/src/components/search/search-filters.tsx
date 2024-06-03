@@ -1,20 +1,18 @@
+import SearchFiltersSheet from './search-filters-sheet';
 import SearchSortBySelect from './search-sort-by-select';
 
-interface SearchFiltersProps {
-  sortParam: string | undefined;
+export interface SearchFiltersProps {
   queryParamsString: string;
 }
 
-const SearchFilters = ({
-  sortParam,
-  queryParamsString,
-}: SearchFiltersProps) => {
+const SearchFilters = ({ queryParamsString }: SearchFiltersProps) => {
   return (
-    <div className="flex space-x-4 justify-end">
-      <SearchSortBySelect
-        sortParam={sortParam}
-        queryParamsString={queryParamsString}
-      />
+    <div className="flex space-x-4 justify-between">
+      <div className="">
+        <SearchFiltersSheet queryParamsString={queryParamsString} />
+        {/* TODO: add search filter tags */}
+      </div>
+      <SearchSortBySelect queryParamsString={queryParamsString} />
     </div>
   );
 };
