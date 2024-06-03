@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import NavOptions from './nav-options';
 import NavSearchInput from './nav-search-input';
 
