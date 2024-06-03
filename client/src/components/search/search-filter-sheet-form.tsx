@@ -8,14 +8,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '../ui/input';
 
-const types = [
+const TYPES = [
   {
     id: 'sale',
     label: 'Venta directa',
@@ -26,33 +26,83 @@ const types = [
   },
 ] as const;
 
+const CATEGORIES = [
+  {
+    id: 'art',
+    label: 'Arte',
+  },
+  {
+    id: 'antiques',
+    label: 'Antigüedades',
+  },
+  {
+    id: 'collectibles',
+    label: 'Coleccionables',
+  },
+  {
+    id: 'technology',
+    label: 'Tecnología',
+  },
+  {
+    id: 'vehicles',
+    label: 'Vehículos',
+  },
+  {
+    id: 'real-estate',
+    label: 'Propiedades',
+  },
+] as const;
+
 const FormSchema = z.object({
-  // types: z.array(z.string()).refine((value) => value.some((item) => item), {
-  //   message: 'You have to select at least one item.',
-  // }),
   type: z.string().optional(),
+  category: z.string().optional(),
+  min: z
+    .string()
+    .refine((val) => val === '' || /^\d+$/.test(val), {
+      message: '¡Los valores deben ser números enteros!',
+    })
+    .optional(),
+  max: z
+    .string()
+    .refine((val) => val === '' || /^\d+$/.test(val), {
+      message: '¡Los valores deben ser números enteros!',
+    })
+    .optional(),
 });
 
-const SearchFilterSheetForm = () => {
+interface SearchFilterSheetFormProps {
+  handleClose: () => void;
+}
+
+const SearchFilterSheetForm = ({ handleClose }: SearchFilterSheetFormProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       type: 'sale',
+      category: undefined,
+      min: '',
+      max: '',
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-  }
+  const {
+    formState: { errors },
+  } = form;
 
-  console.log(form.getValues());
+  // console.log(errors);
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log({ data });
+    console.log({ errors });
+    handleClose();
+  }
 
   return (
     <Form {...form}>
       <form
         id="search-filter-sheet-form"
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8"
+        className="space-y-6"
       >
         <FormField
           control={form.control}
@@ -60,9 +110,11 @@ const SearchFilterSheetForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="mb-4">
-                <FormLabel className="text-base">Sidebar</FormLabel>
+                <FormLabel className="text-sm font-bold">
+                  Tipo de venta
+                </FormLabel>
               </div>
-              {types.map((type) => (
+              {TYPES.map((type) => (
                 <FormItem
                   key={type.id}
                   className="flex flex-row items-start space-x-3 space-y-0"
@@ -84,7 +136,85 @@ const SearchFilterSheetForm = () => {
             </FormItem>
           )}
         />
-        {/* <Button type="submit">Submit</Button> */}
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-sm font-bold">Categorias</FormLabel>
+              </div>
+              {CATEGORIES.map((category) => (
+                <FormItem
+                  key={category.id}
+                  className="flex flex-row items-start space-x-3 space-y-0"
+                >
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value === category.id}
+                      onCheckedChange={(checked) => {
+                        return checked
+                          ? field.onChange(category.id)
+                          : field.onChange(undefined);
+                      }}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal">
+                    {category.label}
+                  </FormLabel>
+                </FormItem>
+              ))}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div>
+          <div className="mb-4">
+            <FormLabel className="text-sm font-bold">Precio</FormLabel>
+          </div>
+          <div className="flex gap-x-4 items-center">
+            <FormField
+              control={form.control}
+              name="min"
+              render={({ field }) => (
+                <FormItem className="max-w-20">
+                  <FormControl>
+                    <Input
+                      autoComplete="off"
+                      placeholder="min"
+                      className="text-xs"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <p>-</p>
+            <FormField
+              control={form.control}
+              name="max"
+              render={({ field }) => (
+                <FormItem className="max-w-20">
+                  <FormControl>
+                    <Input
+                      autoComplete="off"
+                      placeholder="max"
+                      className="text-xs"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="text-sm font-medium text-destructive mt-3">
+            {errors.min ? (
+              <p>{errors['min'].message}</p>
+            ) : (
+              errors.max && <p>{errors['max'].message}</p>
+            )}
+          </div>
+        </div>
       </form>
     </Form>
   );
