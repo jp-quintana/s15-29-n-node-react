@@ -55,11 +55,13 @@ const CATEGORIES = [
   },
 ] as const;
 
-interface SearchFilterSheetFormProps {
+interface SearchFiltersSheetFormProps {
   handleClose: () => void;
 }
 
-const SearchFilterSheetForm = ({ handleClose }: SearchFilterSheetFormProps) => {
+const SearchFiltersSheetForm = ({
+  handleClose,
+}: SearchFiltersSheetFormProps) => {
   const form = useForm<z.infer<typeof searchFiltersSchema>>({
     resolver: zodResolver(searchFiltersSchema),
     defaultValues: {
@@ -205,4 +207,4 @@ const SearchFilterSheetForm = ({ handleClose }: SearchFilterSheetFormProps) => {
   );
 };
 
-export default SearchFilterSheetForm;
+export default SearchFiltersSheetForm;

@@ -13,9 +13,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import SearchFilterSheetForm from './search-filter-sheet-form';
+import SearchFiltersSheetForm from './search-filters-sheet-form';
 
-const SearchFilterSheet = () => {
+const SearchFiltersSheet = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -37,7 +37,7 @@ const SearchFilterSheet = () => {
         {/* <p className="text-sm">Filtros actuales</p> */}
         {/* TODO: add search filter tags */}
         {/* </div> */}
-        <SearchFilterSheetForm handleClose={() => setIsOpen(false)} />
+        <SearchFiltersSheetForm handleClose={() => setIsOpen(false)} />
         <SheetFooter className="mt-auto">
           <Button
             form="search-filter-sheet-form"
@@ -52,4 +52,4 @@ const SearchFilterSheet = () => {
   );
 };
 
-export default SearchFilterSheet;
+export default SearchFiltersSheet;
