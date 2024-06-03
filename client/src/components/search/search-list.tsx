@@ -172,6 +172,8 @@ const SearchList = ({ queryParamsString }: SearchListProps) => {
           return;
         }
 
+        console.log({ result });
+
         setPosts(result.data.products);
         setIsLoading(false);
       })();
