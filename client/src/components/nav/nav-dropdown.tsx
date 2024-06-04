@@ -20,13 +20,14 @@ import {
 import {
   Menu,
   User,
-  Gavel,
   SunMoon,
   Moon,
   Sun,
   LogIn,
   UserPlus,
   LogOut,
+  ShoppingCart,
+  HandCoins,
 } from 'lucide-react';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
@@ -57,10 +58,6 @@ const NavDropdown = ({ isLoggedIn }: NavDropdownProps) => {
                   <span>Perfil</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Gavel className="mr-2 h-4 w-4" />
-                <span>Mis subastas</span>
-              </DropdownMenuItem>
             </DropdownMenuGroup>
           </>
         )}
@@ -80,6 +77,21 @@ const NavDropdown = ({ isLoggedIn }: NavDropdownProps) => {
             </DropdownMenuItem>
           </DropdownMenuGroup>
         )}
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link href="/search" className="flex">
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              <span>Comprar</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/publish" className="flex">
+              <HandCoins className="mr-2 h-4 w-4" />
+              <span>Vender</span>
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuSub>
