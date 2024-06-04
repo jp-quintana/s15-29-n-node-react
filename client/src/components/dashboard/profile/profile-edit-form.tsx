@@ -18,10 +18,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import ProfileAvatar from '@/components/profile-avatar';
+import { useToast } from '@/components/ui/use-toast';
+
+import { updateUser } from '@/services/user.service';
 
 import { editProfileSchema } from '@/lib/schemas';
-import { updateUser } from '@/services/user.service';
-import { useToast } from '@/components/ui/use-toast';
 
 const ProfileEditForm = () => {
   const { data: session, update } = useSession();
@@ -77,7 +79,7 @@ const ProfileEditForm = () => {
           className="space-y-12 mb-12"
         >
           <div className="flex gap-10 items-center justify-between">
-            <div className="w-28 h-28 rounded-full bg-gray-700" />
+            <ProfileAvatar className="w-28 h-28" />
             {!isEditing && (
               <Button onClick={() => setIsEditing(true)}>Editar</Button>
             )}
