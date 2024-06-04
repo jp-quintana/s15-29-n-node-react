@@ -15,7 +15,10 @@ export const authOptions: NextAuthOptions = {
         session.user.accessToken = sessionToken.accessToken as string;
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update') {
+        return { ...token, ...session.user };
+      }
       // console.log({ token, user });
       if (user?.accessToken) token.accessToken = user.accessToken;
       if (user?.lastName) token.lastName = user.lastName;

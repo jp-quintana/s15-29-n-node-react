@@ -44,7 +44,6 @@ const LoginForm = () => {
     });
 
     if (result?.error) {
-      console.log(result.error);
       toast({
         title: 'Hubo un error',
         description: result.error,
