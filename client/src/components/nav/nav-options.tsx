@@ -29,6 +29,14 @@ const NavOptions = () => {
       <>
         {!isMobile && (
           <ul className={cn('flex space-x-4', isMobile && 'hidden')}>
+            <li>
+              <Link
+                href="/publish"
+                className={buttonVariants({ variant: 'ghost' })}
+              >
+                Vender
+              </Link>
+            </li>
             {isLoggedIn && (
               <li>
                 <Link href="/dashboard/profile" className={buttonVariants()}>

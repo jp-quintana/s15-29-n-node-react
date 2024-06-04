@@ -48,7 +48,10 @@ const NavSearchInput = () => {
           placeholder="Buscar productos..."
           className="rounded-r-none focus-visible:ring-0 w-auto focus-visible:ring-offset-0 max-md:flex-1 min-w-0"
         />
-        <Button type="submit" className="rounded-l-none h-10 w-10 p-0">
+        <Button
+          type="submit"
+          className="rounded-l-none h-10 w-10 p-0 flex-shrink-0"
+        >
           <Search />
         </Button>
       </form>

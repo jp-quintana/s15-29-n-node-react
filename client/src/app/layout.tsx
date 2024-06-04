@@ -36,7 +36,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <header className="w-full flex justify-center">
-              <div className="fixed top-0 bg-background z-10 w-full">
+              <div className="fixed top-0 bg-background z-10 w-full shadow">
                 <MaxWidthContainer>
                   <Nav />
                 </MaxWidthContainer>
