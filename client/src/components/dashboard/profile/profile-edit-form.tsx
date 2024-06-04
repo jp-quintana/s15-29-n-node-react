@@ -18,13 +18,19 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import ProfileAvatar from '@/components/profile-avatar';
+import { useToast } from '@/components/ui/use-toast';
+
+import { updateUser } from '@/services/user.service';
 
 import { editProfileSchema } from '@/lib/schemas';
 
 const ProfileEditForm = () => {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
+  const { toast } = useToast();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof editProfileSchema>>({
     resolver: zodResolver(editProfileSchema),
@@ -34,23 +40,52 @@ const ProfileEditForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof editProfileSchema>) => {
+  const onSubmit = async (values: z.infer<typeof editProfileSchema>) => {
+    setIsLoading(true);
+    const result = await updateUser(
+      { id: session?.user?.id as string, ...values },
+      {
+        Authorization: `Bearer ${session?.user?.accessToken}`,
+      }
+    );
+
+    if (!result.ok) {
+      toast({
+        title: 'Los datos no fueron modificados',
+        description: result.error,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (session) {
+      console.log({ values });
+      await update({ ...session, user: { ...session.user, ...values } });
+    }
+    toast({
+      title: 'Datos modificados',
+      description: 'La operación se ha realizado con éxito',
+    });
+
+    setIsLoading(false);
     setIsEditing(false);
-    console.log(values);
   };
 
   return (
     session?.user && (
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-12 mb-12"
+        >
           <div className="flex gap-10 items-center justify-between">
-            <div className="w-28 h-28 rounded-full bg-gray-700" />
+            <ProfileAvatar className="w-28 h-28" />
             {!isEditing && (
               <Button onClick={() => setIsEditing(true)}>Editar</Button>
             )}
             {isEditing && (
               <div className="flex gap-1">
-                <LoadingButton type="submit" isLoading={false}>
+                <LoadingButton type="submit" isLoading={isLoading}>
                   Guardar cambios
                 </LoadingButton>
               </div>
