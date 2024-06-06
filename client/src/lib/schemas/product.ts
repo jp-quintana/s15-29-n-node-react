@@ -14,7 +14,9 @@ export const productUploadSchema = z
     name: z.string().min(1, { message: '¡El nombre está vacío!' }),
     description: z
       .string()
-      .min(10, { message: '¡La descripción está vacía!' })
+      .min(10, {
+        message: '¡La descripción debe contener al menos 10 caracteres!',
+      })
       .max(500, {
         message: '¡La descripción no debe superar los 500 caracteres!',
       }),
@@ -41,15 +43,15 @@ export const productUploadSchema = z
     start_date: z.date().optional(),
     end_date: z.date().optional(),
   })
-  .superRefine(({ check_dates, start_date, end_date }, ctx) => {
-    if (check_dates && !start_date)
+  .superRefine(({ is_auction, check_dates, start_date, end_date }, ctx) => {
+    if (check_dates && is_auction && !start_date)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: '¡Se requiere fecha de inicio!',
         path: ['start_date'],
       });
 
-    if (check_dates && !end_date)
+    if (check_dates && is_auction && !end_date)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: '¡Se requiere fecha de finalización!',

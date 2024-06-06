@@ -58,7 +58,7 @@ const PublishForm = () => {
   });
 
   const fileRef = form.register('file');
-  const { watch, trigger, getValues, resetField, clearErrors, setValue } = form;
+  const { watch, trigger, getValues, resetField, setValue } = form;
   const isAuction = watch('is_auction');
 
   const getNumericValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +91,7 @@ const PublishForm = () => {
     });
 
     if (!check) return;
-
+    setValue('check_dates', false);
     setCurrentStep(1);
   };
 
@@ -105,7 +105,13 @@ const PublishForm = () => {
 
   return (
     <Form {...form}>
-      <form id="publish-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        id="publish-form"
+        onSubmit={form.handleSubmit((values) => {
+          setValue('check_dates', true);
+          onSubmit(values);
+        })}
+      >
         <div className="flex gap-3 relative max-lg:flex-col-reverse">
           <div className="flex-1">
             <div className="space-y-12 bg-secondary rounded-sm border p-6">
@@ -257,7 +263,9 @@ const PublishForm = () => {
                             Puedes programar la subasta con hasta un mes de
                             anticipación.
                           </FormDescription>
-                          <FormMessage className="absolute p-0 m-0" />
+                          <div className="relative">
+                            <FormMessage className="absolute p-0 m-0" />
+                          </div>
                         </FormItem>
                       )}
                     />
@@ -298,11 +306,7 @@ const PublishForm = () => {
                               <Calendar
                                 mode="single"
                                 selected={field.value}
-                                onSelect={(e) => {
-                                  setValue('check_dates', true);
-
-                                  return field.onChange(e);
-                                }}
+                                onSelect={field.onChange}
                                 disabled={(date) => {
                                   const startDate = new Date(
                                     getValues('start_date') as Date
@@ -335,8 +339,9 @@ const PublishForm = () => {
                             La duración máxima de la subasta es de 10 días, con
                             un mínimo de 1 día desde su creación.
                           </FormDescription>
-
-                          <FormMessage className="absolute p-0 m-0" />
+                          <div className="relative">
+                            <FormMessage className="absolute p-0 m-0" />
+                          </div>
                         </FormItem>
                       )}
                     />
@@ -381,7 +386,7 @@ const PublishForm = () => {
           </div>
           <div
             className={cn(
-              'sticky top-[120px] self-start lg:px-3 max-lg:mb-6 max-lg:static'
+              'sticky top-[120px] self-start lg:px-3 max-lg:mb-6 max-lg:static max-w-[360px] w-full'
             )}
           >
             {preview ? (
@@ -417,7 +422,7 @@ const PublishForm = () => {
                         }}
                       />
                     </FormControl>
-                    <FormDescription className="w-[360px]">
+                    <FormDescription>
                       Sube una imagen (solo se aceptan archivos .jpg, .jpeg,
                       .webp y .png).
                     </FormDescription>
