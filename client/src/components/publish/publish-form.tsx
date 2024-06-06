@@ -50,24 +50,22 @@ const PublishForm = () => {
 
   const fileRef = form.register('file');
 
-  const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const getImageData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target?.files?.[0];
 
-    if (!selectedFile) return;
+    let files;
+    let displayUrl;
 
-    const displayUrl = URL.createObjectURL(selectedFile);
-    setPreview(displayUrl);
+    if (selectedFile) {
+      const dataTransfer = new DataTransfer();
 
-    // const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(selectedFile);
 
-    // dataTransfer.items.add(selectedFile);
+      files = dataTransfer.files;
+      displayUrl = URL.createObjectURL(selectedFile);
+    }
 
-    // const files = dataTransfer.files;
-    // const displayUrl = URL.createObjectURL(selectedFile);
-
-    // setPreview(displayUrl);
-
-    // return { files };
+    return { files, displayUrl };
   };
 
   return (
@@ -143,7 +141,7 @@ const PublishForm = () => {
               </div>
             </div>
           </div>
-          <div className="sticky top-[120px] self-start px-3">
+          <div className="sticky top-[120px] self-start px-3 w-[360px]">
             {preview ? (
               <Image
                 src={preview}
@@ -170,10 +168,9 @@ const PublishForm = () => {
                       accept="image/jpeg, image/jpeg, image/png, image/webp"
                       {...fileRef}
                       onChange={(e) => {
-                        handleSelectFile(e);
-                        return field.onChange(
-                          e.target?.files?.[0] ?? undefined
-                        );
+                        const { files, displayUrl } = getImageData(e);
+                        setPreview(displayUrl);
+                        return field.onChange(files);
                       }}
                     />
                   </FormControl>
