@@ -106,7 +106,7 @@ const PublishForm = () => {
   return (
     <Form {...form}>
       <form id="publish-form" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex gap-3 relative">
+        <div className="flex gap-3 relative max-lg:flex-col-reverse">
           <div className="flex-1">
             <div className="space-y-12 bg-secondary rounded-sm border p-6">
               <>
@@ -379,17 +379,21 @@ const PublishForm = () => {
               </div>
             </div>
           </div>
-          <div className="sticky top-[120px] self-start px-3 w-[360px]">
+          <div
+            className={cn(
+              'sticky top-[120px] self-start lg:px-3 max-lg:mb-6 max-lg:static'
+            )}
+          >
             {preview ? (
               <Image
                 src={preview}
                 alt="uploaded-image"
                 width={240}
                 height={240}
-                className="object-contain rounded-sm border h-[240px] bg-secondary"
+                className="object-contain rounded-sm border h-[240px] bg-secondary  max-lg:self-center"
               />
             ) : (
-              <div className="bg-secondary rounded-sm border h-[240px] w-[240px] flex justify-center items-center">
+              <div className="bg-secondary rounded-sm border h-[240px] w-[240px] flex justify-center items-center max-lg:self-center">
                 <ImageIcon size={36} />
               </div>
             )}
@@ -413,7 +417,7 @@ const PublishForm = () => {
                         }}
                       />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="w-[360px]">
                       Sube una imagen (solo se aceptan archivos .jpg, .jpeg,
                       .webp y .png).
                     </FormDescription>
