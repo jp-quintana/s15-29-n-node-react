@@ -19,24 +19,32 @@ import {
 import { Input } from '@/components/ui/input';
 import { Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
+import { Textarea } from '../ui/textarea';
 
-const formSchema = z.object({
-  name: z.string().min(2),
-  file: typeof window === 'undefined' ? z.any() : z.instanceof(FileList),
-});
+import { productUploadSchema } from '@/lib/schemas/product';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
+import { CATEGORY_NAMES } from '@/lib/constants';
 
 const PublishForm = () => {
   const [preview, setPreview] = useState<string | undefined>();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof productUploadSchema>>({
+    resolver: zodResolver(productUploadSchema),
     defaultValues: {
       name: '',
+      description: '',
       file: undefined,
+      category: undefined,
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof productUploadSchema>) => {
     console.log({ values });
   };
 
@@ -56,7 +64,7 @@ const PublishForm = () => {
       <form id="publish-form" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex gap-3 relative">
           <div className="flex-1">
-            <div className="space-y-8 bg-secondary rounded-sm border p-6">
+            <div className="space-y-12 bg-secondary rounded-sm border p-6">
               <FormField
                 control={form.control}
                 name="name"
@@ -64,9 +72,56 @@ const PublishForm = () => {
                   <FormItem>
                     <FormLabel>Nombre</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input placeholder="Nombre del producto" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="absolute p-0 m-0" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Descripción</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Detalles del producto"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="absolute p-0 m-0" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Categoría</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-[200px] capitalize">
+                          <SelectValue placeholder="Elige una categoría" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.entries(CATEGORY_NAMES).map(([key, value]) => (
+                          <SelectItem
+                            key={key}
+                            value={key}
+                            className="capitalize"
+                          >
+                            {value}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="absolute p-0 m-0" />
                   </FormItem>
                 )}
               />

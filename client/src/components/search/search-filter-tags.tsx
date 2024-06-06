@@ -1,16 +1,9 @@
 import { Badge } from '../ui/badge';
 import { SearchFiltersProps } from './search-filters';
 
-interface SearchFilterTagsProps extends SearchFiltersProps {}
+import { CATEGORY_NAMES } from '@/lib/constants';
 
-const CATEGORY_NAMES: { [key: string]: string } = {
-  art: 'arte',
-  antiques: 'antigüedades',
-  collectibles: 'coleccionables',
-  technology: 'tecnología',
-  vehicles: 'vehículos',
-  'real-estate': 'propiedades',
-};
+interface SearchFilterTagsProps extends SearchFiltersProps {}
 
 const SearchFilterTags = ({ queryParamsString }: SearchFilterTagsProps) => {
   const currentQueryParams = new URLSearchParams(queryParamsString);
