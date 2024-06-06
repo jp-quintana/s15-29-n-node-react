@@ -57,6 +57,17 @@ const PublishForm = () => {
 
     const displayUrl = URL.createObjectURL(selectedFile);
     setPreview(displayUrl);
+
+    // const dataTransfer = new DataTransfer();
+
+    // dataTransfer.items.add(selectedFile);
+
+    // const files = dataTransfer.files;
+    // const displayUrl = URL.createObjectURL(selectedFile);
+
+    // setPreview(displayUrl);
+
+    // return { files };
   };
 
   return (
@@ -125,9 +136,11 @@ const PublishForm = () => {
                   </FormItem>
                 )}
               />
-              <Button form="publish-form" type="submit">
-                Submit
-              </Button>
+              <div className="flex items-center justify-end">
+                <Button form="publish-form" type="submit">
+                  Siguiente
+                </Button>
+              </div>
             </div>
           </div>
           <div className="sticky top-[120px] self-start px-3">
@@ -154,7 +167,7 @@ const PublishForm = () => {
                     <Input
                       type="file"
                       multiple={false}
-                      accept="image/jpeg, image/png"
+                      accept="image/jpeg, image/jpeg, image/png, image/webp"
                       {...fileRef}
                       onChange={(e) => {
                         handleSelectFile(e);
@@ -165,7 +178,8 @@ const PublishForm = () => {
                     />
                   </FormControl>
                   <FormDescription>
-                    Sube una imagen (solo se aceptan archivos .jpg y .png).
+                    Sube una imagen (solo se aceptan archivos .jpg, .jpeg, .webp
+                    y .png).
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
