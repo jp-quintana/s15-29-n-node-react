@@ -48,19 +48,23 @@ const PublishForm = () => {
       name: '',
       description: '',
       file: undefined,
+      price: undefined,
       category: undefined,
       is_auction: false,
+      check_dates: false,
       start_date: undefined,
       end_date: undefined,
     },
   });
 
   const fileRef = form.register('file');
-  const { watch, trigger, getValues, resetField, clearErrors } = form;
+  const { watch, trigger, getValues, resetField, clearErrors, setValue } = form;
   const isAuction = watch('is_auction');
 
-  const onSubmit = (values: z.infer<typeof productUploadSchema>) => {
-    console.log({ values });
+  const getNumericValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let numericValue;
+    numericValue = e.target.value.replace(/[^0-9]/g, '');
+    return { numericValue };
   };
 
   const getImageData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,8 +91,12 @@ const PublishForm = () => {
     });
 
     if (!check) return;
-    clearErrors(['start_date', 'end_date']);
+
     setCurrentStep(1);
+  };
+
+  const onSubmit = (values: z.infer<typeof productUploadSchema>) => {
+    console.log({ values });
   };
 
   useEffect(() => {
@@ -136,39 +144,60 @@ const PublishForm = () => {
                         </FormItem>
                       )}
                     />
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Categoría</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
+                    <div className="flex space-x-6">
+                      <FormField
+                        control={form.control}
+                        name="price"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Precio</FormLabel>
                             <FormControl>
-                              <SelectTrigger className="w-[200px] capitalize">
-                                <SelectValue placeholder="Elige una categoría" />
-                              </SelectTrigger>
+                              <Input
+                                {...field}
+                                onChange={(e) => {
+                                  const { numericValue } = getNumericValue(e);
+                                  return field.onChange(numericValue);
+                                }}
+                              />
                             </FormControl>
-                            <SelectContent>
-                              {Object.entries(CATEGORY_NAMES).map(
-                                ([key, value]) => (
-                                  <SelectItem
-                                    key={key}
-                                    value={key}
-                                    className="capitalize"
-                                  >
-                                    {value}
-                                  </SelectItem>
-                                )
-                              )}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage className="absolute p-0 m-0" />
-                        </FormItem>
-                      )}
-                    />
+                            <FormMessage className="absolute p-0 m-0" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Categoría</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="w-[200px] capitalize">
+                                  <SelectValue placeholder="Elige una categoría" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Object.entries(CATEGORY_NAMES).map(
+                                  ([key, value]) => (
+                                    <SelectItem
+                                      key={key}
+                                      value={key}
+                                      className="capitalize"
+                                    >
+                                      {value}
+                                    </SelectItem>
+                                  )
+                                )}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage className="absolute p-0 m-0" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </>
                 )}
                 {currentStep === 1 && (
@@ -228,7 +257,7 @@ const PublishForm = () => {
                             Puedes programar la subasta con hasta un mes de
                             anticipación.
                           </FormDescription>
-                          <FormMessage />
+                          <FormMessage className="absolute p-0 m-0" />
                         </FormItem>
                       )}
                     />
@@ -269,7 +298,11 @@ const PublishForm = () => {
                               <Calendar
                                 mode="single"
                                 selected={field.value}
-                                onSelect={field.onChange}
+                                onSelect={(e) => {
+                                  setValue('check_dates', true);
+
+                                  return field.onChange(e);
+                                }}
                                 disabled={(date) => {
                                   const startDate = new Date(
                                     getValues('start_date') as Date
@@ -303,7 +336,7 @@ const PublishForm = () => {
                             un mínimo de 1 día desde su creación.
                           </FormDescription>
 
-                          <FormMessage />
+                          <FormMessage className="absolute p-0 m-0" />
                         </FormItem>
                       )}
                     />

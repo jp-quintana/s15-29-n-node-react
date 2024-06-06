@@ -32,22 +32,24 @@ export const productUploadSchema = z
               (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
               '¡Solo se aceptan archivos .jpg, .jpeg, .png y .webp!'
             ),
+    price: z.coerce.number(),
     category: z.string({
       message: '¡Se debe seleccionar una opción!',
     }),
     is_auction: z.boolean(),
+    check_dates: z.boolean(),
     start_date: z.date().optional(),
     end_date: z.date().optional(),
   })
-  .superRefine(({ is_auction, start_date, end_date }, ctx) => {
-    if (is_auction && !start_date)
+  .superRefine(({ check_dates, start_date, end_date }, ctx) => {
+    if (check_dates && !start_date)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: '¡Se requiere fecha de inicio!',
         path: ['start_date'],
       });
 
-    if (is_auction && !end_date)
+    if (check_dates && !end_date)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: '¡Se requiere fecha de finalización!',
