@@ -79,6 +79,23 @@ const ProfileEditForm = () => {
           className="space-y-12 mb-12"
         >
           <div className="flex gap-10 items-center justify-between">
+            {/* <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre:</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="nombre"
+                    {...field}
+                    disabled={!isEditing}
+                  />
+                </FormControl>
+                <FormMessage className="absolute p-0 m-0" />
+              </FormItem>
+            )}
+          /> */}
             <ProfileAvatar className="w-28 h-28" />
             {!isEditing && (
               <Button onClick={() => setIsEditing(true)}>Editar</Button>
