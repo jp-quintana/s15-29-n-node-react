@@ -313,23 +313,14 @@ const PublishForm = () => {
                                   );
                                   startDate.setHours(0, 0, 0, 0);
 
-                                  const tenDaysFromStartDate = new Date(
-                                    startDate
-                                  );
-                                  tenDaysFromStartDate.setDate(
-                                    startDate.getDate() + 10
-                                  );
-                                  tenDaysFromStartDate.setHours(
-                                    23,
-                                    59,
-                                    59,
-                                    999
-                                  );
+                                  const minDate = new Date(startDate);
+                                  minDate.setDate(startDate.getDate() + 1);
 
-                                  return (
-                                    date < startDate ||
-                                    date > tenDaysFromStartDate
-                                  );
+                                  const maxDate = new Date(startDate);
+                                  maxDate.setDate(startDate.getDate() + 10);
+                                  maxDate.setHours(23, 59, 59, 999);
+
+                                  return date < minDate || date > maxDate;
                                 }}
                                 initialFocus
                               />
