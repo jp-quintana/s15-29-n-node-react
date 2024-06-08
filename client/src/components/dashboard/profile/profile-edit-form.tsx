@@ -24,6 +24,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { updateUser } from '@/services/user.service';
 
 import { editProfileSchema } from '@/lib/schemas';
+import { cn } from '@/lib/utils';
 
 const ProfileEditForm = () => {
   const { data: session, update } = useSession();
@@ -31,14 +32,36 @@ const ProfileEditForm = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [preview, setPreview] = useState<string | undefined>();
 
   const form = useForm<z.infer<typeof editProfileSchema>>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
       name: session?.user?.name || '',
       lastName: session?.user?.lastName || '',
+      file: undefined,
     },
   });
+
+  const fileRef = form.register('file');
+
+  const getImageData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target?.files?.[0];
+
+    let files;
+    let displayUrl;
+
+    if (selectedFile) {
+      const dataTransfer = new DataTransfer();
+
+      dataTransfer.items.add(selectedFile);
+
+      files = dataTransfer.files;
+      displayUrl = URL.createObjectURL(selectedFile);
+    }
+
+    return { files, displayUrl };
+  };
 
   const onSubmit = async (values: z.infer<typeof editProfileSchema>) => {
     setIsLoading(true);
@@ -79,7 +102,39 @@ const ProfileEditForm = () => {
           className="space-y-12 mb-12"
         >
           <div className="flex gap-10 items-center justify-between">
-            <ProfileAvatar className="w-28 h-28" />
+            <FormField
+              control={form.control}
+              name="file"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <label
+                      htmlFor={`${isEditing && 'upload'}`}
+                      className={cn(isEditing && 'cursor-pointer')}
+                    >
+                      <ProfileAvatar
+                        previewImage={preview}
+                        className="w-28 h-28"
+                      />
+                      <Input
+                        type="file"
+                        multiple={false}
+                        accept="image/jpeg, image/jpeg, image/png, image/webp"
+                        className="hidden"
+                        id="upload"
+                        {...fileRef}
+                        onChange={(e) => {
+                          const { files, displayUrl } = getImageData(e);
+                          setPreview(displayUrl);
+                          return field.onChange(files);
+                        }}
+                      />
+                    </label>
+                  </FormControl>
+                  <FormMessage className="absolute p-0 m-0" />
+                </FormItem>
+              )}
+            />
             {!isEditing && (
               <Button onClick={() => setIsEditing(true)}>Editar</Button>
             )}
