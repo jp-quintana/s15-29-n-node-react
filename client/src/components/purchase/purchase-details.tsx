@@ -2,7 +2,7 @@ import { Separator } from '../ui/separator';
 
 const PurchaseDetails = () => {
   return (
-    <div className="max-w-[360px] w-full">
+    <div className="md:max-w-[360px] w-full">
       <div className="flex gap-4 items-center mb-5">
         <div className="rounded-full bg-primary h-[60px] w-[60px]" />
         <span>Nombre de producto</span>
