@@ -43,7 +43,7 @@ const SearchCard = ({
 
   return (
     <Link
-      href={`/products/${title}`}
+      href={`/product/${title}`}
       className="flex p-2 [&:not(:last-child)]:border-b border-b-border dark:border-b-popover space-x-4"
     >
       <div className="flex justify-center items-center relative">
