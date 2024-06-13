@@ -2,10 +2,10 @@ import Post from '@/lib/models/post.model';
 import { connectToDB } from '@/lib/mongoose';
 
 import { NextResponse } from 'next/server';
-import type { NextApiRequest } from 'next';
+import type { NextRequest } from 'next/server';
 
 // TODO: update
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   const url = new URL(req.url as string);
 
   const searchParams = new URLSearchParams(url.searchParams);
