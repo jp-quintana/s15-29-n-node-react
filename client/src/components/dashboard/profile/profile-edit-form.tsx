@@ -78,6 +78,7 @@ const ProfileEditForm = () => {
       setIsLoading(true);
 
       let formData = new FormData();
+
       formData.append('id', session.user.id);
       formData.append('name', values.name);
       formData.append('lastName', values.lastName);
@@ -103,8 +104,8 @@ const ProfileEditForm = () => {
         });
       }
       toast({
-        title: 'Datos modificados',
-        description: 'La operación se ha realizado con éxito',
+        title: 'La operación se ha realizado con éxito',
+        description: 'Datos modificados',
       });
       setIsLoading(false);
       setIsEditing(false);

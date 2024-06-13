@@ -2,9 +2,7 @@
 
 import { connectToDB } from '../mongoose';
 import User from '../models/user.model';
-import { cloudinary } from '../cloudinary';
-import path from 'path';
-import { writeFile, unlink } from 'fs/promises';
+import { uploadFile } from '../cloudinary';
 
 export const updateUser = async (formData: any) => {
   try {
@@ -16,13 +14,7 @@ export const updateUser = async (formData: any) => {
     let response;
 
     if (file) {
-      console.log({ file });
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const filePath = path.join(process.cwd(), 'public', file.name);
-      await writeFile(filePath, buffer);
-      response = await cloudinary.uploader.upload(filePath);
-      await unlink(filePath);
+      response = await uploadFile(file);
     }
 
     await connectToDB();

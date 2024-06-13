@@ -19,6 +19,7 @@ interface LoadingButtonProps {
     | null
     | undefined;
   className?: string;
+  form?: string;
 }
 
 const LoadingButton = ({
@@ -28,9 +29,11 @@ const LoadingButton = ({
   type,
   variant,
   className,
+  form,
 }: LoadingButtonProps) => {
   return (
     <Button
+      form={form}
       onClick={onClick}
       type={type}
       variant={variant}
