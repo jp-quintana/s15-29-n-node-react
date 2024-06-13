@@ -50,7 +50,7 @@ const Page = async ({
 
   const queryParamsString = queryParams.toString();
 
-  // const result = await fetch(process.env.NEXT_API_BASE_URL + 'api/posts');
+  // const result = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + 'api/posts');
   // console.log(await result.json());
 
   return (

@@ -10,7 +10,7 @@ const PurchasePage = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
   const result = await fetch(
-    ((process.env.NEXT_API_BASE_URL as string) +
+    ((process.env.NEXT_PUBLIC_API_BASE_URL as string) +
       '/post/' +
       params.id) as string,
     { cache: 'no-store' }

@@ -8,7 +8,7 @@ import { Share, Info } from 'lucide-react';
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
   const result = await fetch(
-    ((process.env.NEXT_API_BASE_URL as string) +
+    ((process.env.NEXT_PUBLIC_API_BASE_URL as string) +
       '/post/' +
       params.id) as string,
     { cache: 'no-store' }
