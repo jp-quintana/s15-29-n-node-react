@@ -21,7 +21,8 @@ import { Input } from '@/components/ui/input';
 import ProfileAvatar from '@/components/profile-avatar';
 import { useToast } from '@/components/ui/use-toast';
 
-import { updateUser } from '@/services/user.service';
+// import { updateUser } from '@/services/user.service';
+import { updateUser } from '@/lib/actions/user.action';
 
 import { editProfileSchema } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
@@ -64,34 +65,45 @@ const ProfileEditForm = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof editProfileSchema>) => {
-    setIsLoading(true);
-    const result = await updateUser(
-      { id: session?.user?.id as string, ...values },
-      {
-        Authorization: `Bearer ${session?.user?.accessToken}`,
-      }
-    );
+    // const result = await updateUser(
+    //   { id: session?.user?.id as string, ...values },
+    //   {
+    //     Authorization: `Bearer ${session?.user?.accessToken}`,
+    //   }
+    // );
 
-    if (!result.ok) {
+    if (session?.user) {
+      setIsLoading(true);
+
+      let formData = new FormData();
+      formData.append('id', session.user.id);
+      formData.append('name', values.name);
+      formData.append('lastName', values.lastName);
+
+      if (values?.file?.[0]) {
+        formData.append('file', values.file[0]);
+      }
+
+      const result = await updateUser(formData);
+      if (result?.error) {
+        toast({
+          title: 'Los datos no fueron modificados',
+          description: result.error,
+        });
+        setIsLoading(false);
+        return;
+      }
+      if (session) {
+        console.log({ values });
+        await update({ ...session, user: { ...session.user, ...values } });
+      }
       toast({
-        title: 'Los datos no fueron modificados',
-        description: result.error,
+        title: 'Datos modificados',
+        description: 'La operación se ha realizado con éxito',
       });
       setIsLoading(false);
-      return;
+      setIsEditing(false);
     }
-
-    if (session) {
-      console.log({ values });
-      await update({ ...session, user: { ...session.user, ...values } });
-    }
-    toast({
-      title: 'Datos modificados',
-      description: 'La operación se ha realizado con éxito',
-    });
-
-    setIsLoading(false);
-    setIsEditing(false);
   };
 
   return (
@@ -123,6 +135,7 @@ const ProfileEditForm = () => {
                         className="hidden"
                         id="upload"
                         {...fileRef}
+                        value={undefined}
                         onChange={(e) => {
                           const { files, displayUrl } = getImageData(e);
                           setPreview(displayUrl);
