@@ -4,6 +4,7 @@ import { connectToDB } from '@/lib/mongoose';
 import { NextResponse } from 'next/server';
 import type { NextApiRequest } from 'next';
 
+// TODO: update
 export async function GET(req: NextApiRequest) {
   const url = new URL(req.url as string);
 
@@ -14,6 +15,7 @@ export async function GET(req: NextApiRequest) {
   const page = searchParams.get('page');
   const s = searchParams.get('s');
   const t = searchParams.get('t') as 'sale' | 'auction';
+  const userId = searchParams.get('userId');
 
   console.log({ searchParams });
 
@@ -28,6 +30,7 @@ export async function GET(req: NextApiRequest) {
 
   const query: any = { name: { $regex: s ? s : '', $options: 'i' } };
   query.isAuction = t === 'auction';
+  query.user = userId;
 
   const posts = await Post.paginate(query, {
     ...paginationOptions,

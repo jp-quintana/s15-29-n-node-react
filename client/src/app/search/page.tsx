@@ -50,6 +50,9 @@ const Page = async ({
 
   const queryParamsString = queryParams.toString();
 
+  // const result = await fetch(process.env.NEXT_API_BASE_URL + 'api/posts');
+  // console.log(await result.json());
+
   return (
     <div className="min-h-screen py-20">
       <MaxWidthContainer className="flex flex-col space-y-4">
