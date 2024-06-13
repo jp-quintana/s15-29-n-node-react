@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
+import leanVirtuals from 'mongoose-lean-virtuals';
 
 const postSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -23,6 +25,18 @@ const postSchema = new mongoose.Schema({
   startDate: { type: Date },
   endDate: { type: Date },
 });
+
+postSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+postSchema.set('toJSON', { virtuals: true });
+
+postSchema.set('toObject', { virtuals: true });
+
+postSchema.plugin(paginate);
+
+postSchema.plugin(leanVirtuals);
 
 const Post = mongoose.models?.Post || mongoose.model('Post', postSchema);
 

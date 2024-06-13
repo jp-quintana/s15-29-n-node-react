@@ -157,6 +157,8 @@ const SearchList = ({ queryParamsString }: SearchListProps) => {
     const tParam = currentQueryParams.get('t') as 'sale' | 'auction';
 
     (async () => {
+      const resultado = await fetch('api/posts');
+      console.log(await resultado.json());
       if (tParam === 'auction') {
         // TODO: fetch auctions
         return;
