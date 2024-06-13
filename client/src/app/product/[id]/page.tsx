@@ -2,6 +2,7 @@ import MaxWidthContainer from '@/components/max-width-container';
 import ProductCarousel from '@/components/product-detail/product-carousel';
 import ProductPaymentDetails from '@/components/product-detail/product-payment-details';
 import { Button } from '@/components/ui/button';
+import UserAvatar from '@/components/user-avatar';
 
 import { Share, Info } from 'lucide-react';
 
@@ -19,7 +20,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <MaxWidthContainer className="py-20 min-h-screen">
-      <h1 className="text-xl font-bold">INMUEBLES en CABA y Bs As.</h1>
+      <h1 className="text-xl font-bold">{post.name}</h1>
       <div className="flex items-center gap-x-3 mt-2">
         <Button className="flex items-center gap-x-2" variant="outline">
           <Share className="text-primary" />
@@ -30,15 +31,25 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
           Contacto
         </Button>
       </div>
-      <div className="mt-10">
-        <p className="font-medium">
-          Cochera en microcentro ideal para tramitar por la zona
+      <div className="mt-12">
+        <p className="mb-2 flex gap-x-3 items-center font-medium">
+          <UserAvatar user={post.user} />
+          {post.user.name} {post.user.lastName}
         </p>
-        <div className="flex mt-3 gap-20 justify-between">
-          <div className="flex-1 flex justify-center">
-            <ProductCarousel />
+        <p className="underline text-sm">{post.description}</p>
+        <div className="flex mt-3 gap-20 justify-between max-xl:flex-col">
+          <div className="flex-1 flex justify-center ">
+            <ProductCarousel image={post.image} />
           </div>
-          <ProductPaymentDetails />
+          <ProductPaymentDetails
+            id={params.id}
+            owner={post.user}
+            isAuction={post.isAuction}
+            price={post.price}
+            lastBid={post.lastBid}
+            startDate={post.startDate}
+            endDate={post.endDate}
+          />
         </div>
         <div className="text-sm mt-10">
           <div className="inline-flex flex-col">

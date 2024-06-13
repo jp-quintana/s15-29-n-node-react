@@ -56,7 +56,7 @@ const UserPostList = () => {
             <div className="flex justify-center">
               <div className="text-center">
                 <p className="mb-3">
-                  No hay productos en {isSalesPage ? 'venta' : 'subasta'}.
+                  No tenés productos en {isSalesPage ? 'venta' : 'subasta'}.
                 </p>
                 <Link
                   href="/publish"

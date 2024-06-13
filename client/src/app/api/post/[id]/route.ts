@@ -8,10 +8,13 @@ interface Request extends NextRequest {
   params: { id: string };
 }
 
-export async function GET(req: Request) {
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   await connectToDB();
 
-  const post = await Post.findById(req.params.id as string)
+  const post = await Post.findById(params.id as string)
     .populate('user')
     .populate({
       path: 'lastBid.user',

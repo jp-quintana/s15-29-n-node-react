@@ -35,6 +35,23 @@ export const createPost = async (formData: any) => {
 
     return { ok: true };
   } catch (error: any) {
-    return { error: `Failed to create user: ${error.message}` };
+    return { error: `Failed to create post: ${error.message}` };
+  }
+};
+
+export const updatePost = async (values: any) => {
+  try {
+    await connectToDB();
+
+    console.log(values);
+    await Post.findOneAndUpdate(
+      { _id: values.id },
+      { lastBid: { user: values.userId, price: +values.bid } },
+      { new: true }
+    );
+
+    return { ok: true };
+  } catch (error: any) {
+    return { error: `Failed to update post: ${error.message}` };
   }
 };
