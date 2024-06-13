@@ -36,7 +36,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
           <UserAvatar user={post.user} />
           {post.user.name} {post.user.lastName}
         </p>
-        <p className="underline text-sm">{post.description}</p>
+        <p className="underline text-sm">{post.name}</p>
         <div className="flex mt-3 gap-20 justify-between max-xl:flex-col">
           <div className="flex-1 flex justify-center ">
             <ProductCarousel image={post.image} />
