@@ -8,16 +8,44 @@ import {
   PaginationPrevious,
 } from '../ui/pagination';
 
-const SearchPagination = () => {
+interface SearchPaginationProps {
+  queryParamsString: string;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  limit: number;
+  nextPage: null | number;
+  page: number;
+  // pagingCounter: number;
+  prevPage: null | number;
+  totalDocs: number;
+  totalPages: number;
+}
+
+const SearchPagination = ({
+  queryParamsString,
+  hasNextPage,
+  hasPrevPage,
+  limit,
+  nextPage,
+  page,
+  // pagingCounter,
+  prevPage,
+  totalDocs,
+  totalPages,
+}: SearchPaginationProps) => {
   // TODO: update logic
   return (
     <Pagination>
       <PaginationContent>
+        {hasPrevPage && (
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+        )}
         <PaginationItem>
-          <PaginationPrevious href="#" isActive />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
+          <PaginationLink href="#" isActive>
+            1
+          </PaginationLink>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="#">2</PaginationLink>
@@ -28,9 +56,11 @@ const SearchPagination = () => {
         <PaginationItem>
           <PaginationEllipsis />
         </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
+        {nextPage && (
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        )}
       </PaginationContent>
     </Pagination>
   );

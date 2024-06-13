@@ -8,7 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { register } from '@/services/auth.service';
+// import { register } from '@/services/auth.service';
+import { register } from '@/lib/actions/auth.action';
 
 import {
   Form,
@@ -44,6 +45,7 @@ const RegisterForm = () => {
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     setIsLoading(true);
     const registerResult = await register(values);
+    // const registerResult = await register(values);
 
     if (registerResult?.error) {
       toast({
@@ -70,6 +72,7 @@ const RegisterForm = () => {
     }
 
     window.location.reload();
+    setIsLoading(false);
   };
 
   return (

@@ -27,7 +27,7 @@ export const productUploadSchema = z
               (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
               '¡Solo se aceptan archivos .jpg, .jpeg, .png y .webp!'
             ),
-    price: z.coerce.number(),
+    price: z.coerce.number({ message: '¡El precio está vacío!' }),
     category: z.string({
       message: '¡Se debe seleccionar una opción!',
     }),

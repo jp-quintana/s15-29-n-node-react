@@ -1,7 +1,8 @@
 import { loginSchema } from '@/lib/schemas';
-import { login } from '@/services/auth.service';
+// import { login } from '@/services/auth.service';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { login } from './actions/auth.action';
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
@@ -13,15 +14,18 @@ export const authOptions: NextAuthOptions = {
         session.user.lastName = sessionToken.lastName as string;
       if (session?.user && sessionToken?.accessToken)
         session.user.accessToken = sessionToken.accessToken as string;
+      if (session?.user && sessionToken?.image)
+        session.user.image = sessionToken.image as string;
+
       return session;
     },
     async jwt({ token, user, trigger, session }) {
       if (trigger === 'update') {
         return { ...token, ...session.user };
       }
-      // console.log({ token, user });
       if (user?.accessToken) token.accessToken = user.accessToken;
       if (user?.lastName) token.lastName = user.lastName;
+      if (user?.image) token.image = user.image;
       return token;
     },
   },
@@ -40,20 +44,19 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Campos de inicio de sesión no válidos.');
         }
 
-        const result = await login({ email, password });
+        const userData = await login({ email, password });
 
-        if (!result?.ok) {
-          throw new Error(result.error);
+        if (!userData) {
+          throw new Error('Hubo un error');
         }
 
-        const { data } = result;
-
         const user = {
-          id: data.user.id,
-          name: data.user.name,
-          lastName: data.user.lastName,
-          email: data.user.email,
-          accessToken: data.token,
+          id: userData._id.toString(),
+          name: userData.name,
+          lastName: userData.lastName,
+          email: userData.email,
+          accessToken: '',
+          image: userData.image,
         };
 
         return user;

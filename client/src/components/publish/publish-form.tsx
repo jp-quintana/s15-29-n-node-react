@@ -36,10 +36,20 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { format } from 'date-fns';
 import { Calendar } from '../ui/calendar';
 import { cn } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
+import { createPost } from '@/lib/actions/post.action';
+import { useToast } from '@/components/ui/use-toast';
+import LoadingButton from '../loading-button';
+import { useRouter } from 'next/navigation';
 
 const PublishForm = () => {
+  const { data: session } = useSession();
+  const { toast } = useToast();
+  const router = useRouter();
+
   const [currentStep, setCurrentStep] = useState(0);
   const [preview, setPreview] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
   // const [previewName, setPreviewName] = useState<string | undefined>();
 
   const form = useForm<z.infer<typeof productUploadSchema>>({
@@ -86,17 +96,60 @@ const PublishForm = () => {
   };
 
   const handleNextStep = async () => {
-    const check = await trigger(['name', 'description', 'file', 'category'], {
-      shouldFocus: true,
-    });
+    const check = await trigger(
+      ['name', 'description', 'file', 'category', 'price'],
+      {
+        shouldFocus: true,
+      }
+    );
 
     if (!check) return;
     setValue('check_dates', false);
     setCurrentStep(1);
   };
 
-  const onSubmit = (values: z.infer<typeof productUploadSchema>) => {
-    console.log({ values });
+  console.log(currentStep);
+
+  const onSubmit = async (values: z.infer<typeof productUploadSchema>) => {
+    if (session?.user) {
+      setIsLoading(true);
+
+      let formData = new FormData();
+
+      formData.append('id', session.user.id);
+      formData.append('name', values.name);
+      formData.append('description', values.description);
+      formData.append('file', values.file[0]);
+      formData.append('price', values.price.toString());
+      formData.append('category', values.category);
+
+      values.is_auction &&
+        formData.append('is_auction', values.is_auction.toString());
+      values.start_date &&
+        formData.append('start_date', values.start_date.toISOString());
+      values.end_date &&
+        formData.append('end_date', values.end_date.toISOString());
+
+      const result = await createPost(formData);
+
+      if (result?.error) {
+        toast({
+          title: 'La carga del producto no fue exitosa',
+          description: result.error,
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      toast({
+        title: 'La operación se ha realizado con éxito',
+        description: `Se ha creado la ${
+          isAuction ? 'subasta' : 'venta directa'
+        } para el producto ${values.name}`,
+      });
+      setIsLoading(false);
+      router.push(`/dashboard/${isAuction ? 'auctions' : 'sales'}`);
+    }
   };
 
   useEffect(() => {
@@ -127,6 +180,7 @@ const PublishForm = () => {
                           <FormControl>
                             <Input
                               placeholder="Nombre del producto"
+                              disabled={isLoading}
                               {...field}
                             />
                           </FormControl>
@@ -144,6 +198,7 @@ const PublishForm = () => {
                             <Textarea
                               placeholder="Detalles del producto"
                               {...field}
+                              disabled={isLoading}
                             />
                           </FormControl>
                           <FormMessage className="absolute p-0 m-0" />
@@ -164,6 +219,7 @@ const PublishForm = () => {
                                   const { numericValue } = getNumericValue(e);
                                   return field.onChange(numericValue);
                                 }}
+                                disabled={isLoading}
                               />
                             </FormControl>
                             <FormMessage className="absolute p-0 m-0" />
@@ -181,7 +237,10 @@ const PublishForm = () => {
                               defaultValue={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="w-[200px] capitalize">
+                                <SelectTrigger
+                                  disabled={isLoading}
+                                  className="w-[200px] capitalize"
+                                >
                                   <SelectValue placeholder="Elige una categoría" />
                                 </SelectTrigger>
                               </FormControl>
@@ -223,6 +282,7 @@ const PublishForm = () => {
                                     'w-[240px] pl-3 text-left font-normal',
                                     !field.value && 'text-muted-foreground'
                                   )}
+                                  disabled={isLoading}
                                 >
                                   {field.value ? (
                                     format(field.value, 'dd/MM/yyyy')
@@ -279,7 +339,9 @@ const PublishForm = () => {
                             <PopoverTrigger asChild>
                               <FormControl>
                                 <Button
-                                  disabled={!getValues('start_date')}
+                                  disabled={
+                                    !getValues('start_date') || isLoading
+                                  }
                                   variant={'outline'}
                                   className={cn(
                                     'w-[240px] pl-3 text-left font-normal',
@@ -352,6 +414,7 @@ const PublishForm = () => {
                               checked={field.value}
                               onCheckedChange={field.onChange}
                               id="is_auction"
+                              disabled={isLoading}
                             />
                             <Label htmlFor="is_auction">Es subasta</Label>
                           </div>
@@ -363,15 +426,19 @@ const PublishForm = () => {
                 {currentStep === 1 && (
                   <Button onClick={() => setCurrentStep(0)}>Atrás</Button>
                 )}
-                <Button
-                  form="publish-form"
-                  type="submit"
-                  onClick={
-                    isAuction && currentStep === 0 ? handleNextStep : undefined
-                  }
-                >
-                  {isAuction && currentStep === 0 ? 'Siguiente' : 'Crear'}
-                </Button>
+                {currentStep === 0 && isAuction && (
+                  <Button onClick={handleNextStep}>Siguiente</Button>
+                )}
+                {(currentStep === 0 && !isAuction) ||
+                (currentStep === 1 && isAuction) ? (
+                  <LoadingButton
+                    isLoading={isLoading}
+                    form="publish-form"
+                    type="submit"
+                  >
+                    Crear
+                  </LoadingButton>
+                ) : null}
               </div>
             </div>
           </div>
@@ -411,6 +478,7 @@ const PublishForm = () => {
                           setPreview(displayUrl);
                           return field.onChange(files);
                         }}
+                        disabled={isLoading}
                       />
                     </FormControl>
                     <FormDescription>
