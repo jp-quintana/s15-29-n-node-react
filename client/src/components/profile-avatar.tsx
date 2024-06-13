@@ -11,7 +11,7 @@ interface ProfileAvatar {
 const ProfileAvatar = ({ previewImage, className }: ProfileAvatar) => {
   const { data: session } = useSession();
 
-  const src = session?.user?.image || previewImage;
+  const src = previewImage || session?.user?.image;
 
   return (
     session?.user && (

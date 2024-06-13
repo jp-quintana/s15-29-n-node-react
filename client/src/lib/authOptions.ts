@@ -14,15 +14,18 @@ export const authOptions: NextAuthOptions = {
         session.user.lastName = sessionToken.lastName as string;
       if (session?.user && sessionToken?.accessToken)
         session.user.accessToken = sessionToken.accessToken as string;
+      if (session?.user && sessionToken?.image)
+        session.user.image = sessionToken.image as string;
+
       return session;
     },
     async jwt({ token, user, trigger, session }) {
       if (trigger === 'update') {
         return { ...token, ...session.user };
       }
-      // console.log({ token, user });
       if (user?.accessToken) token.accessToken = user.accessToken;
       if (user?.lastName) token.lastName = user.lastName;
+      if (user?.image) token.image = user.image;
       return token;
     },
   },
@@ -53,6 +56,7 @@ export const authOptions: NextAuthOptions = {
           lastName: userData.lastName,
           email: userData.email,
           accessToken: '',
+          image: userData.image,
         };
 
         return user;

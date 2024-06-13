@@ -31,6 +31,8 @@ const ProfileEditForm = () => {
   const { data: session, update } = useSession();
   const { toast } = useToast();
 
+  console.log({ session });
+
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState<string | undefined>();
@@ -85,6 +87,7 @@ const ProfileEditForm = () => {
       }
 
       const result = await updateUser(formData);
+      console.log({ result });
       if (result?.error) {
         toast({
           title: 'Los datos no fueron modificados',
@@ -94,8 +97,10 @@ const ProfileEditForm = () => {
         return;
       }
       if (session) {
-        console.log({ values });
-        await update({ ...session, user: { ...session.user, ...values } });
+        await update({
+          ...session,
+          user: { ...session.user, ...result },
+        });
       }
       toast({
         title: 'Datos modificados',
